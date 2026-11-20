@@ -23,7 +23,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="min-h-screen bg-[#070b16] text-slate-100 antialiased selection:bg-purple-600 selection:text-white">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Commissioner:wght@300;400;500;600;700;800&family=Tangerine:wght@400;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-[#070b16] text-slate-100 antialiased selection:bg-purple-600 selection:text-white font-sans">
         <AppProvider>
           {children}
         </AppProvider>

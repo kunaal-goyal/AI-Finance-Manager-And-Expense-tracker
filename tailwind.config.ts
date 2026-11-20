@@ -35,7 +35,9 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        sans: ["'Commissioner'", "-apple-system", "BlinkMacSystemFont", "'Segoe UI'", "Roboto", "sans-serif"],
+        commissioner: ["'Commissioner'", "sans-serif"],
+        tangerine: ["'Tangerine'", "cursive"],
       },
       boxShadow: {
         "glow-purple": "0 0 25px -5px rgba(139, 92, 246, 0.25)",

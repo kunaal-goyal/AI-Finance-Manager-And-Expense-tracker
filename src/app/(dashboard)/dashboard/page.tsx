@@ -27,7 +27,7 @@ export default function DashboardPage() {
           {/* Hello + Name */}
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-4">
             <span
-              className="text-2xl sm:text-3xl font-semibold tracking-tight"
+              className="text-2xl sm:text-3xl font-medium tracking-tight"
               style={{
                 color: '#a78bfa',
                 textShadow:
@@ -37,11 +37,12 @@ export default function DashboardPage() {
               Hello,
             </span>
             <span
-              className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none"
+              className="font-tangerine text-6xl sm:text-7xl lg:text-8xl font-bold tracking-normal leading-none"
               style={{
+                fontFamily: "'Tangerine', cursive",
                 color: '#ffffff',
                 textShadow:
-                  '0 0 24px rgba(255,255,255,0.2), 0 0 55px rgba(167,139,250,0.28)',
+                  '0 0 24px rgba(255,255,255,0.25), 0 0 55px rgba(167,139,250,0.35)',
               }}
             >
               {profile.fullName.split(' ')[0]}
