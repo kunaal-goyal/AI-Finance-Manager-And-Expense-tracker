@@ -19,7 +19,7 @@ import { Input, Select } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { useApp } from '@/context/AppContext';
-import { formatCurrency, EXPENSE_CATEGORIES } from '@/lib/utils';
+import { formatCurrency, EXPENSE_CATEGORIES, cn } from '@/lib/utils';
 import { Budget, ExpenseCategory } from '@/types';
 
 export default function BudgetPage() {
@@ -32,6 +32,7 @@ export default function BudgetPage() {
     summary,
     profile,
     updateProfile,
+    theme,
   } = useApp();
   const sym = profile.currencySymbol;
 
@@ -126,7 +127,12 @@ export default function BudgetPage() {
       </div>
 
       {/* Overall Monthly Spending Cap Card */}
-      <Card className="bg-gradient-to-r from-[#0d152d] via-[#101833] to-[#0a1024] border-indigo-500/20">
+      <Card className={cn(
+        'transition-all',
+        theme === 'light'
+          ? 'bg-indigo-50/50 border-indigo-200'
+          : 'bg-gradient-to-r from-[#0d152d] via-[#101833] to-[#0a1024] border-indigo-500/20'
+      )}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2 flex-1">
             <div className="flex items-center gap-2">
@@ -245,10 +251,12 @@ export default function BudgetPage() {
               <Card
                 className={`space-y-4 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu flex flex-col justify-between h-full ${
                   isHovered
-                    ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]'
+                    ? (theme === 'light'
+                        ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400 shadow-[0_8px_30px_rgba(147,51,234,0.18)] bg-white'
+                        : 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]')
                     : isOther
-                    ? 'scale-[0.95] opacity-55 z-0'
-                    : 'hover:border-slate-700'
+                    ? 'scale-[0.95] opacity-50 z-0'
+                    : 'hover:border-purple-300'
                 }`}
               >
                 <div>

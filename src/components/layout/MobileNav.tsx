@@ -96,7 +96,14 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
             return (
               <div key={item.name} className="relative">
                 {isHovered && (
-                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40 opacity-75 blur-md -z-10 animate-pulse pointer-events-none" />
+                  <div
+                    className={cn(
+                      'absolute -inset-1 rounded-2xl opacity-75 blur-md -z-10 animate-pulse pointer-events-none',
+                      theme === 'light'
+                        ? 'bg-gradient-to-r from-purple-400/40 via-indigo-400/30 to-pink-400/30'
+                        : 'bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40'
+                    )}
+                  />
                 )}
 
                 <Link
@@ -106,12 +113,18 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
                   className={cn(
                     'relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
                     isHovered &&
-                      'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20',
-                    isOtherHovered && 'scale-[0.94] opacity-55 z-0',
+                      (theme === 'light'
+                        ? 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
+                        : 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
+                    isOtherHovered && 'scale-[0.94] opacity-50 z-0',
                     !isHovered && !isOtherHovered && (
                       isActive
-                        ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30'
-                        : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                        ? (theme === 'light'
+                            ? 'bg-purple-100 text-purple-700 border border-purple-200'
+                            : 'bg-purple-600/15 text-purple-300 border border-purple-500/30')
+                        : (theme === 'light'
+                            ? 'text-slate-600 hover:text-purple-900 hover:bg-purple-50/80'
+                            : 'text-slate-400 hover:text-white hover:bg-slate-800/60')
                     )
                   )}
                 >

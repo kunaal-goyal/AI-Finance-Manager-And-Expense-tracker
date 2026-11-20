@@ -5,10 +5,10 @@ import Link from 'next/link';
 import { Sparkles, ArrowRight, Zap, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
 import { useApp } from '@/context/AppContext';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, cn } from '@/lib/utils';
 
 export function AIObservationsWidget() {
-  const { summary, profile, categoryBreakdown } = useApp();
+  const { summary, profile, categoryBreakdown, theme } = useApp();
   const sym = profile.currencySymbol;
 
   // Generate dynamic financial observations based on actual current state
@@ -68,13 +68,18 @@ export function AIObservationsWidget() {
   }
 
   return (
-    <Card className="relative overflow-hidden border-purple-500/20 bg-gradient-to-br from-[#0e152e] via-[#0b1022] to-[#070b16]">
+    <Card className={cn(
+      'relative overflow-hidden transition-all',
+      theme === 'light'
+        ? 'border-purple-200 bg-gradient-to-br from-purple-50/70 via-white to-purple-50/40 shadow-sm'
+        : 'border-purple-500/20 bg-gradient-to-br from-[#0e152e] via-[#0b1022] to-[#070b16]'
+    )}>
       <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
 
-      <CardHeader className="mb-3 border-purple-900/30">
+      <CardHeader className={cn('mb-3', theme === 'light' ? 'border-purple-100' : 'border-purple-900/30')}>
         <div className="flex items-center gap-2">
           <div className="p-1.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-            <Sparkles className="w-4 h-4 text-cyan-300 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
           </div>
           <div>
             <CardTitle className="text-sm sm:text-base flex items-center gap-2">
@@ -101,7 +106,12 @@ export function AIObservationsWidget() {
           return (
             <div
               key={idx}
-              className="flex items-start gap-3 p-3 rounded-xl bg-slate-900/70 border border-slate-800/80 text-xs text-slate-200"
+              className={cn(
+                'flex items-start gap-3 p-3 rounded-xl border text-xs leading-relaxed',
+                theme === 'light'
+                  ? 'bg-white border-purple-100 text-slate-700 shadow-sm'
+                  : 'bg-slate-900/70 border-slate-800/80 text-slate-200'
+              )}
             >
               <Icon className={`w-4 h-4 shrink-0 mt-0.5 ${obs.iconColor}`} />
               <div
@@ -109,7 +119,7 @@ export function AIObservationsWidget() {
                 dangerouslySetInnerHTML={{
                   __html: obs.text.replace(
                     /\*\*(.*?)\*\*/g,
-                    '<strong class="text-white font-semibold">$1</strong>'
+                    `<strong class="${theme === 'light' ? 'text-purple-950 font-bold' : 'text-white font-semibold'}">$1</strong>`
                   ),
                 }}
               />

@@ -23,7 +23,7 @@ interface SidebarProps {
 
 export function Sidebar({ onOpenAddModal }: SidebarProps) {
   const pathname = usePathname();
-  const { profile, isSupabaseMode } = useApp();
+  const { profile, isSupabaseMode, theme } = useApp();
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const navItems = [
@@ -110,7 +110,14 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
             <div key={item.name} className="relative">
               {/* Glowing Aura Behind Hovered Item */}
               {isHovered && (
-                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40 opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none" />
+                <div
+                  className={cn(
+                    'absolute -inset-1 rounded-2xl opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none',
+                    theme === 'light'
+                      ? 'bg-gradient-to-r from-purple-400/40 via-indigo-400/30 to-pink-400/30'
+                      : 'bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40'
+                  )}
+                />
               )}
 
               <Link
@@ -120,14 +127,20 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                   'relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
                   // Hovered state: zoom in, translate right, glow
                   isHovered &&
-                    'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20',
+                    (theme === 'light'
+                      ? 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
+                      : 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
                   // Other items: decrease size and soften opacity
-                  isOtherHovered && 'scale-[0.94] opacity-55 z-0',
+                  isOtherHovered && 'scale-[0.94] opacity-50 z-0',
                   // Standard state when nothing hovered
                   !isHovered && !isOtherHovered && (
                     isActive
-                      ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
+                      ? (theme === 'light'
+                          ? 'bg-purple-100 text-purple-700 border border-purple-200 shadow-sm font-semibold'
+                          : 'bg-purple-600/15 text-purple-300 border border-purple-500/30 shadow-sm')
+                      : (theme === 'light'
+                          ? 'text-slate-600 hover:text-purple-900 hover:bg-purple-50/80'
+                          : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60')
                   )
                 )}
               >
@@ -136,15 +149,15 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                     className={cn(
                       'w-4 h-4 transition-all duration-300',
                       isHovered
-                        ? 'text-purple-300 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]'
+                        ? (theme === 'light' ? 'text-purple-600 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'text-purple-300 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]')
                         : isActive
-                        ? 'text-purple-400'
+                        ? 'text-purple-500'
                         : item.isAi
-                        ? 'text-cyan-400'
-                        : 'text-slate-400'
+                        ? 'text-cyan-500'
+                        : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
                     )}
                   />
-                  <span className={cn('transition-colors', isHovered && 'font-bold text-white')}>
+                  <span className={cn('transition-colors', isHovered && (theme === 'light' ? 'text-purple-900 font-bold' : 'text-white font-bold'))}>
                     {item.name}
                   </span>
                 </div>
@@ -153,8 +166,8 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                     className={cn(
                       'text-[10px] font-bold px-2 py-0.5 rounded-full transition-all duration-300',
                       isHovered
-                        ? 'bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.6)] font-extrabold'
-                        : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                        ? (theme === 'light' ? 'bg-purple-600 text-white shadow-sm font-extrabold' : 'bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.6)] font-extrabold')
+                        : 'bg-purple-500/20 text-purple-600 border border-purple-500/30'
                     )}
                   >
                     {item.badge}

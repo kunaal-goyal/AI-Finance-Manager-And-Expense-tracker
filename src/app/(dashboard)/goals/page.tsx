@@ -24,7 +24,7 @@ import { Input, Select } from '@/components/ui/Input';
 import { Modal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import { useApp } from '@/context/AppContext';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate, cn } from '@/lib/utils';
 import { SavingsGoal } from '@/types';
 
 export default function GoalsPage() {
@@ -35,6 +35,7 @@ export default function GoalsPage() {
     deleteGoal,
     addGoalContribution,
     profile,
+    theme,
   } = useApp();
   const sym = profile.currencySymbol;
 
@@ -182,7 +183,12 @@ export default function GoalsPage() {
 
       {/* Aggregate Savings Metric Banner */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card className="p-4 bg-gradient-to-br from-indigo-950/40 to-slate-900 border-indigo-500/20">
+        <Card className={cn(
+          'p-4 transition-all',
+          theme === 'light'
+            ? 'bg-indigo-50/50 border-indigo-200'
+            : 'bg-gradient-to-br from-indigo-950/40 to-slate-900 border-indigo-500/20'
+        )}>
           <p className="text-xs text-slate-400 font-medium">Total Saved in Goals</p>
           <p className="text-2xl font-bold text-emerald-400 mt-1">
             {formatCurrency(totalSavedAcrossGoals, sym)}
@@ -192,21 +198,31 @@ export default function GoalsPage() {
           </p>
         </Card>
 
-        <Card className="p-4 bg-gradient-to-br from-purple-950/40 to-slate-900 border-purple-500/20">
+        <Card className={cn(
+          'p-4 transition-all',
+          theme === 'light'
+            ? 'bg-purple-50/50 border-purple-200'
+            : 'bg-gradient-to-br from-purple-950/40 to-slate-900 border-purple-500/20'
+        )}>
           <p className="text-xs text-slate-400 font-medium">Active Goals</p>
-          <p className="text-2xl font-bold text-purple-300 mt-1">
+          <p className="text-2xl font-bold text-purple-600 dark:text-purple-300 mt-1">
             {goals.length - completedGoalsCount} Goals In Progress
           </p>
           <p className="text-[11px] text-slate-500 mt-0.5">Targeting specific student milestones</p>
         </Card>
 
-        <Card className="p-4 bg-gradient-to-br from-emerald-950/40 to-slate-900 border-emerald-500/20">
+        <Card className={cn(
+          'p-4 transition-all',
+          theme === 'light'
+            ? 'bg-emerald-50/50 border-emerald-200'
+            : 'bg-gradient-to-br from-emerald-950/40 to-slate-900 border-emerald-500/20'
+        )}>
           <p className="text-xs text-slate-400 font-medium">Goals Accomplished</p>
-          <p className="text-2xl font-bold text-white mt-1 flex items-center gap-2">
+          <p className="text-2xl font-bold text-slate-900 dark:text-white mt-1 flex items-center gap-2">
             <span>{completedGoalsCount} Goals</span>
-            <Trophy className="w-5 h-5 text-amber-400" />
+            <Trophy className="w-5 h-5 text-amber-500" />
           </p>
-          <p className="text-[11px] text-emerald-400 mt-0.5">100% funded and completed</p>
+          <p className="text-[11px] text-emerald-500 dark:text-emerald-400 mt-0.5">100% funded and completed</p>
         </Card>
       </div>
 
@@ -241,12 +257,14 @@ export default function GoalsPage() {
               <Card
                 className={`space-y-4 flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu h-full ${
                   isHovered
-                    ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]'
+                    ? (theme === 'light'
+                        ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400 shadow-[0_8px_30px_rgba(147,51,234,0.18)] bg-white'
+                        : 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]')
                     : isOther
-                    ? 'scale-[0.95] opacity-55 z-0'
+                    ? 'scale-[0.95] opacity-50 z-0'
                     : g.isCompleted
-                    ? 'border-emerald-500/40 bg-emerald-950/10'
-                    : 'hover:border-slate-700'
+                    ? (theme === 'light' ? 'border-emerald-500/40 bg-emerald-50/50' : 'border-emerald-500/40 bg-emerald-950/10')
+                    : 'hover:border-purple-300'
                 }`}
               >
               <div>
