@@ -76,44 +76,50 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
       }}
       className={cn(
         'hidden lg:flex flex-col border-r shrink-0 min-h-screen sticky top-0 h-screen select-none overflow-x-hidden overflow-y-auto scrollbar-none z-40 p-3.5',
-        'transition-[width] duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+        'transition-[width] duration-300 ease-in-out',
         isExpanded ? 'w-64' : 'w-[74px]',
         theme === 'light' ? 'bg-white border-slate-200' : 'bg-[#090e1e] border-slate-800/80'
       )}
     >
       {/* Brand Logo */}
       <Link href="/dashboard" className="flex items-center gap-3 px-1 py-1 mb-6 group overflow-hidden">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300 shrink-0">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-105 transition-transform duration-200 shrink-0">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div
           className={cn(
-            'overflow-hidden transition-all duration-300 transform',
-            isExpanded ? 'opacity-100 max-w-[170px] translate-x-0' : 'opacity-0 max-w-0 -translate-x-4 pointer-events-none'
+            'overflow-hidden transition-all duration-300 whitespace-nowrap',
+            isExpanded ? 'opacity-100 max-w-[160px]' : 'opacity-0 max-w-0 pointer-events-none'
           )}
         >
-          <span className="font-extrabold text-lg text-white tracking-tight flex items-center gap-1.5 whitespace-nowrap">
+          <span className={cn(
+            'font-extrabold text-lg tracking-tight flex items-center gap-1.5',
+            theme === 'light' ? 'text-slate-900' : 'text-white'
+          )}>
             SpendWise <span className="text-purple-400 font-bold text-xs bg-purple-500/20 px-1.5 py-0.5 rounded-md border border-purple-500/30">AI</span>
           </span>
-          <p className="text-[11px] text-slate-400 font-medium whitespace-nowrap">Student Finance Suite</p>
+          <p className={cn(
+            'text-[11px] font-medium',
+            theme === 'light' ? 'text-slate-500' : 'text-slate-400'
+          )}>Student Finance Suite</p>
         </div>
       </Link>
 
       {/* Quick Add Action */}
-      <div className="mb-5">
+      <div className="mb-5 px-0.5">
         <button
           onClick={onOpenAddModal}
           title={!isExpanded ? 'Add Transaction' : undefined}
           className={cn(
-            'w-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 border border-purple-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]',
-            isExpanded ? 'gap-2.5 py-2.5 px-4 text-sm' : 'p-2.5 aspect-square'
+            'w-full h-11 flex items-center justify-center bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 border border-purple-400/30 transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] overflow-hidden',
+            isExpanded ? 'px-4 gap-2.5' : 'px-0'
           )}
         >
           <PlusCircle className="w-5 h-5 shrink-0" />
           <span
             className={cn(
-              'overflow-hidden transition-all duration-200 whitespace-nowrap font-semibold',
-              isExpanded ? 'opacity-100 max-w-[130px] translate-x-0' : 'opacity-0 max-w-0 -translate-x-2'
+              'overflow-hidden transition-all duration-200 whitespace-nowrap font-semibold text-sm',
+              isExpanded ? 'opacity-100 max-w-[130px] ml-1' : 'opacity-0 max-w-0 ml-0 pointer-events-none'
             )}
           >
             Add Transaction
@@ -121,9 +127,9 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
         </button>
       </div>
 
-      {/* Navigation Links with Retract/Expand Animations */}
+      {/* Navigation Links with Simple Zoom In / Out */}
       <nav
-        className="space-y-1.5 flex-1 py-1 overflow-x-hidden scrollbar-none"
+        className="space-y-1.5 flex-1 py-1 px-1 overflow-x-hidden scrollbar-none"
         onMouseLeave={() => setHoveredIdx(null)}
       >
         <div
@@ -147,10 +153,10 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
               {isHovered && (
                 <div
                   className={cn(
-                    'absolute inset-0 rounded-xl opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none',
+                    'absolute inset-x-0.5 inset-y-0 rounded-xl opacity-75 blur-md -z-10 transition-all duration-200 pointer-events-none',
                     theme === 'light'
-                      ? 'bg-gradient-to-r from-purple-400/40 via-indigo-400/30 to-pink-400/30'
-                      : 'bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40'
+                      ? 'bg-gradient-to-r from-purple-400/35 via-indigo-400/25 to-pink-400/25'
+                      : 'bg-gradient-to-r from-purple-600/50 via-indigo-600/40 to-cyan-500/30'
                   )}
                 />
               )}
@@ -160,15 +166,15 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                 onMouseEnter={() => setHoveredIdx(index)}
                 title={!isExpanded ? item.name : undefined}
                 className={cn(
-                  'relative flex items-center rounded-xl transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-center select-none overflow-hidden',
-                  isExpanded ? 'justify-between px-3.5 py-2.5' : 'justify-center p-2.5 aspect-square',
-                  // Hovered state
+                  'group relative flex items-center h-11 w-full rounded-xl transition-all duration-200 ease-out select-none overflow-hidden',
+                  isExpanded ? 'px-3 justify-start' : 'px-0 justify-center',
+                  // Hovered state: simple zoom without clipping borders
                   isHovered &&
                     (theme === 'light'
-                      ? 'scale-[1.04] bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20'
-                      : 'scale-[1.04] bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20'),
-                  // Other items: decrease size and soften opacity
-                  isOtherHovered && 'scale-[0.96] opacity-50 z-0',
+                      ? 'scale-[1.02] bg-purple-100/90 text-purple-900 border border-purple-300 shadow-[0_2px_12px_rgba(147,51,234,0.14)] z-20 font-bold'
+                      : 'scale-[1.02] bg-purple-900/35 text-white border border-purple-400/80 shadow-[0_0_16px_rgba(168,85,247,0.35)] z-20 font-bold'),
+                  // Other items: subtle softening
+                  isOtherHovered && 'scale-[0.98] opacity-60 z-0',
                   // Standard unhovered state
                   !isHovered && !isOtherHovered && (
                     isActive
@@ -181,13 +187,14 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                   )
                 )}
               >
-                <div className="flex items-center gap-3 min-w-0">
-                  {/* Symbol / Icon */}
+                {/* Fixed-size Icon Container so it NEVER shifts, balloons or goes outside */}
+                <div className="w-9 h-9 flex items-center justify-center shrink-0">
                   <Icon
                     className={cn(
-                      'w-5 h-5 shrink-0 transition-all duration-300',
+                      'w-5 h-5 transition-transform duration-200 ease-out',
+                      isHovered ? 'scale-110' : 'scale-100',
                       isHovered
-                        ? (theme === 'light' ? 'text-purple-600 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]' : 'text-purple-300 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]')
+                        ? (theme === 'light' ? 'text-purple-600' : 'text-purple-300 drop-shadow-[0_0_6px_rgba(168,85,247,0.8)]')
                         : isActive
                         ? 'text-purple-500'
                         : item.isAi
@@ -195,29 +202,30 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                         : (theme === 'light' ? 'text-slate-500' : 'text-slate-400')
                     )}
                   />
-
-                  {/* Name of the page: larger than the 20px symbol */}
-                  <span
-                    className={cn(
-                      'text-[17px] font-bold tracking-tight whitespace-nowrap transition-all duration-200',
-                      isExpanded
-                        ? 'opacity-100 max-w-[150px] translate-x-0'
-                        : 'opacity-0 max-w-0 -translate-x-3 overflow-hidden pointer-events-none',
-                      isHovered && (theme === 'light' ? 'text-purple-950 font-extrabold' : 'text-white font-extrabold')
-                    )}
-                  >
-                    {item.name}
-                  </span>
                 </div>
+
+                {/* Name of the page: noticeably larger than the 20px symbol (18px font-bold) */}
+                <span
+                  className={cn(
+                    'text-[18px] font-bold tracking-tight whitespace-nowrap transition-all duration-200 ease-out origin-left',
+                    isExpanded
+                      ? 'opacity-100 max-w-[140px] ml-2'
+                      : 'opacity-0 max-w-0 ml-0 overflow-hidden pointer-events-none',
+                    isHovered ? 'scale-105' : 'scale-100',
+                    isHovered && (theme === 'light' ? 'text-purple-950 font-extrabold' : 'text-white font-extrabold')
+                  )}
+                >
+                  {item.name}
+                </span>
 
                 {/* Optional Badge */}
                 {item.badge && (
                   <span
                     className={cn(
-                      'text-[10px] font-bold px-2 py-0.5 rounded-full transition-all duration-200 shrink-0',
+                      'text-[10px] font-bold px-2 py-0.5 rounded-full transition-all duration-200 shrink-0 ml-auto mr-1',
                       isExpanded ? 'opacity-100 scale-100' : 'opacity-0 scale-75 overflow-hidden pointer-events-none',
                       isHovered
-                        ? (theme === 'light' ? 'bg-purple-600 text-white shadow-sm font-extrabold' : 'bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.6)] font-extrabold')
+                        ? (theme === 'light' ? 'bg-purple-600 text-white font-extrabold shadow-sm' : 'bg-cyan-400 text-slate-950 font-extrabold shadow-[0_0_10px_rgba(6,182,212,0.6)]')
                         : 'bg-purple-500/20 text-purple-600 border border-purple-500/30'
                     )}
                   >
@@ -231,21 +239,40 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
       </nav>
 
       {/* Footer Student Card */}
-      <div className="pt-4 border-t border-slate-800/80 space-y-3 overflow-hidden">
-        <div className="p-2 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-2.5 transition-all duration-300 hover:border-purple-500/30 overflow-hidden">
-          <div className="w-9 h-9 rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center font-bold text-sm text-purple-300 shrink-0">
+      <div className={cn(
+        'pt-4 border-t space-y-3 overflow-hidden',
+        theme === 'light' ? 'border-slate-200' : 'border-slate-800/80'
+      )}>
+        <div className={cn(
+          'p-1.5 rounded-xl border flex items-center gap-2.5 transition-all duration-200 overflow-hidden h-12',
+          theme === 'light'
+            ? 'bg-slate-100 border-slate-200 hover:border-purple-300'
+            : 'bg-slate-900/80 border-slate-800 hover:border-purple-500/30'
+        )}>
+          <div className={cn(
+            'w-9 h-9 rounded-full border flex items-center justify-center font-bold text-sm shrink-0',
+            theme === 'light'
+              ? 'bg-purple-100 border-purple-200 text-purple-700'
+              : 'bg-purple-600/20 border-purple-500/30 text-purple-300'
+          )}>
             {profile.fullName.charAt(0) || 'S'}
           </div>
           <div
             className={cn(
-              'overflow-hidden transition-all duration-200 flex-1 min-w-0',
-              isExpanded ? 'opacity-100 max-w-[140px] translate-x-0' : 'opacity-0 max-w-0 -translate-x-3 pointer-events-none'
+              'overflow-hidden transition-all duration-200 flex-1 min-w-0 whitespace-nowrap',
+              isExpanded ? 'opacity-100 max-w-[140px]' : 'opacity-0 max-w-0 pointer-events-none'
             )}
           >
-            <p className="text-xs font-semibold text-white truncate">
+            <p className={cn(
+              'text-xs font-semibold truncate',
+              theme === 'light' ? 'text-slate-800' : 'text-white'
+            )}>
               {profile.fullName}
             </p>
-            <p className="text-[11px] text-slate-400 truncate">
+            <p className={cn(
+              'text-[11px] truncate',
+              theme === 'light' ? 'text-slate-500' : 'text-slate-400'
+            )}>
               {profile.collegeName || 'Student'}
             </p>
           </div>
@@ -253,15 +280,21 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
 
         <div
           className={cn(
-            'flex items-center justify-between px-1 text-[11px] text-slate-400 overflow-hidden transition-all duration-200',
-            isExpanded ? 'opacity-100 h-auto' : 'opacity-0 h-0 pointer-events-none'
+            'flex items-center justify-between px-1 text-[11px] overflow-hidden transition-all duration-200',
+            theme === 'light' ? 'text-slate-500' : 'text-slate-400',
+            isExpanded ? 'opacity-100 h-6' : 'opacity-0 h-0 pointer-events-none'
           )}
         >
           <span className="flex items-center gap-1.5 whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             {isSupabaseMode ? 'Supabase Live' : 'Active Workspace'}
           </span>
-          <span className="font-semibold text-purple-300 bg-purple-950/60 px-2 py-0.5 rounded border border-purple-800/40 whitespace-nowrap">
+          <span className={cn(
+            'font-semibold px-2 py-0.5 rounded border whitespace-nowrap',
+            theme === 'light'
+              ? 'text-purple-700 bg-purple-50 border-purple-200'
+              : 'text-purple-300 bg-purple-950/60 border-purple-800/40'
+          )}>
             {profile.currencySymbol} {profile.currency}
           </span>
         </div>
