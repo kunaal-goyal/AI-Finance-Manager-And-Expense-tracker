@@ -27,7 +27,6 @@ export async function POST(req: NextRequest) {
     const hasValidKey = apiKey && apiKey.trim() !== '' && !apiKey.includes('your-google-gemini-api-key');
 
     if (!hasValidKey) {
-      // Return smart simulated response based on real student financial context
       const fallbackReply = generateSmartFallbackResponse(message, context as ChatContextPayload);
       return NextResponse.json({
         reply: fallbackReply,
@@ -36,21 +35,18 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Call official Google Gemini API
+    // Call official Google Gemini API with gemini-3.5-flash-lite
     const genAI = new GoogleGenerativeAI(apiKey);
     const systemPrompt = buildSystemPrompt(context as ChatContextPayload);
 
-    // Use gemini-1.5-flash for high speed and accurate financial analysis
     const model = genAI.getGenerativeModel({
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3.5-flash-lite',
       systemInstruction: systemPrompt,
     });
 
-    // Format chat history for Gemini SDK
-    // Gemini SDK expects { role: 'user' | 'model', parts: [{ text: string }] }
     const formattedHistory = (history || [])
       .filter((msg: any) => msg.role === 'user' || msg.role === 'assistant')
-      .slice(-8) // keep recent turns
+      .slice(-6)
       .map((msg: any) => ({
         role: msg.role === 'user' ? 'user' : 'model',
         parts: [{ text: msg.content }],
@@ -75,27 +71,19 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error('Error in /api/ai/chat:', error);
 
-    // Provide friendly student-appropriate fallback on API or rate limit errors
-    const errorMessage = error?.message || '';
-    if (errorMessage.includes('API_KEY_INVALID') || errorMessage.includes('key not valid')) {
-      return NextResponse.json(
-        {
-          error: 'Your Google Gemini API key appears invalid. Please check .env.local or AI Studio.',
-          fallbackReply: generateSmartFallbackResponse(
-            'analyze my expenses',
-            (req as any).body?.context
-          ),
-        },
-        { status: 401 }
-      );
-    }
+    // Fallback gracefully on any API model issue
+    const fallbackReply = generateSmartFallbackResponse(
+      (await req.json().catch(() => ({})))?.message || 'analyze my expenses',
+      (req as any).body?.context
+    );
 
     return NextResponse.json(
       {
-        error: 'Failed to process AI response. Please try again.',
-        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined,
+        reply: fallbackReply,
+        isOfficialGemini: false,
+        error: error?.message,
       },
-      { status: 500 }
+      { status: 200 }
     );
   }
 }
