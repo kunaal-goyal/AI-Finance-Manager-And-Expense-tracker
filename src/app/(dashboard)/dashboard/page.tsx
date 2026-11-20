@@ -21,26 +21,46 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Top Banner / Student Context Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900 border border-purple-500/20 backdrop-blur-sm">
+      {/* Greeting Header */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900 border border-purple-500/20 backdrop-blur-sm">
         <div>
-          <div className="flex items-center gap-2 mb-1">
+          {/* Hello + Name */}
+          <div className="flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-3">
+            <span
+              className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-none"
+              style={{
+                color: '#a78bfa',
+                textShadow:
+                  '0 0 16px rgba(167,139,250,0.6), 0 0 40px rgba(139,92,246,0.35)',
+              }}
+            >
+              Hello,
+            </span>
+            <span
+              className="text-4xl sm:text-5xl font-black tracking-tight leading-tight sm:leading-none"
+              style={{
+                color: '#ffffff',
+                textShadow:
+                  '0 0 20px rgba(255,255,255,0.15), 0 0 50px rgba(167,139,250,0.22)',
+              }}
+            >
+              {profile.fullName.split(' ')[0]}
+            </span>
+          </div>
+
+          {/* Sub-info badges */}
+          <div className="flex items-center gap-2 mt-2.5">
             <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
               {profile.studentType.replace('_', ' ')}
             </span>
-            <span className="text-xs text-slate-400 font-medium">
-              {profile.collegeName}
-            </span>
+            <span className="text-xs text-slate-400 font-medium">{profile.collegeName}</span>
           </div>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
-            Smart Financial Dashboard
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
-            Real-time tracking of allowance, daily spending, budget limits & savings goals
+          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+            Real-time tracking of allowance, daily spending, budget limits &amp; savings goals
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <div className="text-right px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-800">
             <p className="text-[11px] text-slate-400 font-medium">Monthly Allowance</p>
             <p className="text-base font-bold text-emerald-400">

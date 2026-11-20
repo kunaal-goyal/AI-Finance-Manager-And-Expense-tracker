@@ -112,10 +112,16 @@ function AssistantChatView() {
         }),
       });
 
-      const data = await res.json();
+      let data: any = {};
+      const responseText = await res.text();
+      try {
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch {
+        throw new Error('Server returned an invalid response. Please try again in a moment.');
+      }
 
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to get response');
+        throw new Error(data.error || `Server error (${res.status})`);
       }
 
       setIsOfficialGemini(data.isOfficialGemini);
