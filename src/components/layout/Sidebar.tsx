@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -13,8 +13,6 @@ import {
   Settings,
   PlusCircle,
   GraduationCap,
-  ShieldCheck,
-  Zap,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/context/AppContext';
@@ -26,6 +24,7 @@ interface SidebarProps {
 export function Sidebar({ onOpenAddModal }: SidebarProps) {
   const pathname = usePathname();
   const { profile, isSupabaseMode } = useApp();
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const navItems = [
     {
@@ -71,7 +70,7 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
     <aside className="hidden lg:flex flex-col w-64 border-r border-slate-800/80 bg-[#090e1e] p-5 shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto">
       {/* Brand Logo */}
       <Link href="/dashboard" className="flex items-center gap-3 px-2 py-1 mb-8 group">
-        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-105 transition-transform">
+        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300">
           <GraduationCap className="w-5 h-5 text-white" />
         </div>
         <div>
@@ -86,59 +85,90 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
       <div className="mb-6">
         <button
           onClick={onOpenAddModal}
-          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2.5 px-4 rounded-xl shadow-lg shadow-purple-600/20 border border-purple-400/30 transition-all active:scale-[0.98] text-sm"
+          className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-medium py-2.5 px-4 rounded-xl shadow-lg shadow-purple-600/20 hover:shadow-purple-600/40 border border-purple-400/30 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] text-sm"
         >
           <PlusCircle className="w-4 h-4" />
           <span>Add Transaction</span>
         </button>
       </div>
 
-      {/* Navigation Links */}
-      <nav className="space-y-1.5 flex-1">
+      {/* Navigation Links with Fisheye / Zoom & Glow Animation */}
+      <nav
+        className="space-y-1.5 flex-1 py-1"
+        onMouseLeave={() => setHoveredIdx(null)}
+      >
         <div className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
           Menu
         </div>
-        {navItems.map((item) => {
+        {navItems.map((item, index) => {
           const isActive = pathname === item.href;
           const Icon = item.icon;
+          const isHovered = hoveredIdx === index;
+          const isOtherHovered = hoveredIdx !== null && !isHovered;
 
           return (
-            <Link
-              key={item.name}
-              href={item.href}
-              className={cn(
-                'flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all group',
-                isActive
-                  ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30 shadow-sm'
-                  : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
+            <div key={item.name} className="relative">
+              {/* Glowing Aura Behind Hovered Item */}
+              {isHovered && (
+                <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40 opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none" />
               )}
-            >
-              <div className="flex items-center gap-3">
-                <Icon
-                  className={cn(
-                    'w-4 h-4 transition-colors',
+
+              <Link
+                href={item.href}
+                onMouseEnter={() => setHoveredIdx(index)}
+                className={cn(
+                  'relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
+                  // Hovered state: zoom in, translate right, glow
+                  isHovered &&
+                    'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20',
+                  // Other items: decrease size and soften opacity
+                  isOtherHovered && 'scale-[0.94] opacity-55 z-0',
+                  // Standard state when nothing hovered
+                  !isHovered && !isOtherHovered && (
                     isActive
-                      ? 'text-purple-400'
-                      : item.isAi
-                      ? 'text-cyan-400 group-hover:text-cyan-300'
-                      : 'text-slate-400 group-hover:text-slate-200'
-                  )}
-                />
-                <span>{item.name}</span>
-              </div>
-              {item.badge && (
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
-                  {item.badge}
-                </span>
-              )}
-            </Link>
+                      ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30 shadow-sm'
+                      : 'text-slate-400 hover:text-slate-100 hover:bg-slate-800/60'
+                  )
+                )}
+              >
+                <div className="flex items-center gap-3">
+                  <Icon
+                    className={cn(
+                      'w-4 h-4 transition-all duration-300',
+                      isHovered
+                        ? 'text-purple-300 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]'
+                        : isActive
+                        ? 'text-purple-400'
+                        : item.isAi
+                        ? 'text-cyan-400'
+                        : 'text-slate-400'
+                    )}
+                  />
+                  <span className={cn('transition-colors', isHovered && 'font-bold text-white')}>
+                    {item.name}
+                  </span>
+                </div>
+                {item.badge && (
+                  <span
+                    className={cn(
+                      'text-[10px] font-bold px-2 py-0.5 rounded-full transition-all duration-300',
+                      isHovered
+                        ? 'bg-cyan-400 text-slate-950 shadow-[0_0_12px_rgba(6,182,212,0.6)] font-extrabold'
+                        : 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30'
+                    )}
+                  >
+                    {item.badge}
+                  </span>
+                )}
+              </Link>
+            </div>
           );
         })}
       </nav>
 
       {/* Footer Student Card */}
       <div className="pt-4 border-t border-slate-800/80 space-y-3">
-        <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3">
+        <div className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center gap-3 transition-all duration-300 hover:border-purple-500/30 hover:scale-[1.02]">
           <div className="w-9 h-9 rounded-full bg-purple-600/20 border border-purple-500/30 flex items-center justify-center font-bold text-sm text-purple-300">
             {profile.fullName.charAt(0) || 'S'}
           </div>

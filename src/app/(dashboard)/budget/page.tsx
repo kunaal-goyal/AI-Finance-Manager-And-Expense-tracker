@@ -44,6 +44,7 @@ export default function BudgetPage() {
   const [category, setCategory] = useState<ExpenseCategory>('Food and Dining');
   const [monthlyLimit, setMonthlyLimit] = useState('');
   const [error, setError] = useState('');
+  const [hoveredBudgetId, setHoveredBudgetId] = useState<string | null>(null);
 
   // State for Overall Monthly Limit editor
   const [isEditingOverall, setIsEditingOverall] = useState(false);
@@ -213,78 +214,104 @@ export default function BudgetPage() {
       </div>
 
       {/* Category Budgets Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
+        onMouseLeave={() => setHoveredBudgetId(null)}
+      >
         {budgetPerformances.map((bp) => {
           const { budget, spent, remaining, percent, status } = bp;
+          const isHovered = hoveredBudgetId === budget.id;
+          const isOther = hoveredBudgetId !== null && !isHovered;
 
           const statusBadge = {
-            safe: { variant: 'safe' as const, label: 'Under Control', color: 'bg-emerald-500', text: 'text-emerald-400' },
-            warning: { variant: 'warning' as const, label: 'Approaching Limit', color: 'bg-amber-500', text: 'text-amber-400' },
-            danger: { variant: 'danger' as const, label: 'Budget Exceeded', color: 'bg-rose-500', text: 'text-rose-400' },
+            safe: { variant: 'safe' as const, label: 'Under Control', color: 'bg-emerald-500', text: 'text-emerald-400', glow: 'from-emerald-600/40 via-purple-600/30 to-indigo-600/40' },
+            warning: { variant: 'warning' as const, label: 'Approaching Limit', color: 'bg-amber-500', text: 'text-amber-400', glow: 'from-amber-600/40 via-purple-600/30 to-rose-600/40' },
+            danger: { variant: 'danger' as const, label: 'Budget Exceeded', color: 'bg-rose-500', text: 'text-rose-400', glow: 'from-rose-600/50 via-purple-600/30 to-amber-600/40' },
           }[status];
 
           return (
-            <Card key={budget.id} className="space-y-4 hover:border-slate-700 transition-all flex flex-col justify-between">
-              <div>
-                <div className="flex items-start justify-between gap-2 pb-3 border-b border-slate-800">
-                  <div>
-                    <h3 className="font-bold text-white text-base">{budget.category}</h3>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      Monthly Cap: {formatCurrency(budget.monthlyLimit, sym)}
-                    </p>
+            <div
+              key={budget.id}
+              className="relative"
+              onMouseEnter={() => setHoveredBudgetId(budget.id)}
+            >
+              {/* Glowing Aura Behind Hovered Budget Card */}
+              {isHovered && (
+                <div
+                  className={`absolute -inset-1.5 rounded-2xl bg-gradient-to-r ${statusBadge.glow} opacity-80 blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300`}
+                />
+              )}
+
+              <Card
+                className={`space-y-4 transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu flex flex-col justify-between h-full ${
+                  isHovered
+                    ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]'
+                    : isOther
+                    ? 'scale-[0.95] opacity-55 z-0'
+                    : 'hover:border-slate-700'
+                }`}
+              >
+                <div>
+                  <div className="flex items-start justify-between gap-2 pb-3 border-b border-slate-800">
+                    <div>
+                      <h3 className="font-bold text-white text-base">{budget.category}</h3>
+                      <p className="text-xs text-slate-400 mt-0.5">
+                        Monthly Cap: {formatCurrency(budget.monthlyLimit, sym)}
+                      </p>
+                    </div>
+                    <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
                   </div>
-                  <Badge variant={statusBadge.variant}>{statusBadge.label}</Badge>
+
+                  {/* Progress bar */}
+                  <div className="pt-3 space-y-2">
+                    <div className="flex justify-between items-baseline text-xs">
+                      <span className="text-slate-400">
+                        Spent: <strong className="text-white font-bold">{formatCurrency(spent, sym)}</strong>
+                      </span>
+                      <span className={`font-bold ${statusBadge.text}`}>{percent}%</span>
+                    </div>
+
+                    <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden p-0.5">
+                      <div
+                        className={`h-full rounded-full transition-all duration-500 ${statusBadge.color}`}
+                        style={{ width: `${Math.min(100, percent)}%` }}
+                      />
+                    </div>
+
+                    <div className="flex justify-between items-center text-[11px] text-slate-400 pt-1">
+                      <span>
+                        {remaining > 0 ? (
+                          <span className="text-slate-300">{formatCurrency(remaining, sym)} remaining</span>
+                        ) : (
+                          <span className="text-rose-400 font-bold">
+                            Exceeded by {formatCurrency(Math.abs(budget.monthlyLimit - spent), sym)}
+                          </span>
+                        )}
+                      </span>
+                      <span>Month: {budget.month}</span>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Progress bar */}
-                <div className="pt-3 space-y-2">
-                  <div className="flex justify-between items-baseline text-xs">
-                    <span className="text-slate-400">
-                      Spent: <strong className="text-white font-bold">{formatCurrency(spent, sym)}</strong>
-                    </span>
-                    <span className={`font-bold ${statusBadge.text}`}>{percent}%</span>
-                  </div>
-
-                  <div className="w-full bg-slate-800 rounded-full h-2.5 overflow-hidden p-0.5">
-                    <div
-                      className={`h-full rounded-full transition-all duration-500 ${statusBadge.color}`}
-                      style={{ width: `${Math.min(100, percent)}%` }}
-                    />
-                  </div>
-
-                  <div className="flex justify-between items-center text-[11px] text-slate-400 pt-1">
-                    <span>
-                      {remaining > 0 ? (
-                        <span className="text-slate-300">{formatCurrency(remaining, sym)} remaining</span>
-                      ) : (
-                        <span className="text-rose-400 font-bold">
-                          Exceeded by {formatCurrency(Math.abs(budget.monthlyLimit - spent), sym)}
-                        </span>
-                      )}
-                    </span>
-                    <span>Month: {budget.month}</span>
-                  </div>
+                {/* Action buttons */}
+                <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800/80">
+                  <button
+                    onClick={() => handleOpenEdit(budget)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-xs flex items-center gap-1"
+                  >
+                    <Edit className="w-3.5 h-3.5" />
+                    <span>Edit Limit</span>
+                  </button>
+                  <button
+                    onClick={() => handleDeleteBudget(budget.id, budget.category)}
+                    className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors text-xs flex items-center gap-1"
+                  >
+                    <Trash2 className="w-3.5 h-3.5" />
+                    <span>Remove</span>
+                  </button>
                 </div>
-              </div>
-
-              {/* Action buttons */}
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-slate-800/80">
-                <button
-                  onClick={() => handleOpenEdit(budget)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors text-xs flex items-center gap-1"
-                >
-                  <Edit className="w-3.5 h-3.5" />
-                  <span>Edit Limit</span>
-                </button>
-                <button
-                  onClick={() => handleDeleteBudget(budget.id, budget.category)}
-                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors text-xs flex items-center gap-1"
-                >
-                  <Trash2 className="w-3.5 h-3.5" />
-                  <span>Remove</span>
-                </button>
-              </div>
-            </Card>
+              </Card>
+            </div>
           );
         })}
       </div>

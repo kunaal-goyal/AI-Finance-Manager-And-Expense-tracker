@@ -52,6 +52,7 @@ export default function GoalsPage() {
   const [contribAmount, setContribAmount] = useState('');
   const [contribNote, setContribNote] = useState('');
   const [error, setError] = useState('');
+  const [hoveredGoalId, setHoveredGoalId] = useState<string | null>(null);
 
   const handleOpenAddGoal = () => {
     setSelectedGoal(null);
@@ -210,20 +211,44 @@ export default function GoalsPage() {
       </div>
 
       {/* Goals Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        onMouseLeave={() => setHoveredGoalId(null)}
+      >
         {goals.map((g) => {
           const percent = Math.min(100, Math.round((g.currentAmount / g.targetAmount) * 100));
           const remaining = Math.max(0, g.targetAmount - g.currentAmount);
+          const isHovered = hoveredGoalId === g.id;
+          const isOther = hoveredGoalId !== null && !isHovered;
 
           return (
-            <Card
+            <div
               key={g.id}
-              className={`space-y-4 flex flex-col justify-between transition-all ${
-                g.isCompleted
-                  ? 'border-emerald-500/40 bg-emerald-950/10'
-                  : 'hover:border-slate-700'
-              }`}
+              className="relative"
+              onMouseEnter={() => setHoveredGoalId(g.id)}
             >
+              {/* Glowing Aura Behind Hovered Goal Card */}
+              {isHovered && (
+                <div
+                  className={`absolute -inset-1.5 rounded-2xl bg-gradient-to-r ${
+                    g.isCompleted
+                      ? 'from-emerald-600/50 via-teal-600/40 to-cyan-500/40'
+                      : 'from-purple-600/50 via-indigo-600/40 to-cyan-500/30'
+                  } opacity-80 blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300`}
+                />
+              )}
+
+              <Card
+                className={`space-y-4 flex flex-col justify-between transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu h-full ${
+                  isHovered
+                    ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]'
+                    : isOther
+                    ? 'scale-[0.95] opacity-55 z-0'
+                    : g.isCompleted
+                    ? 'border-emerald-500/40 bg-emerald-950/10'
+                    : 'hover:border-slate-700'
+                }`}
+              >
               <div>
                 <div className="flex items-start justify-between gap-3 pb-3 border-b border-slate-800">
                   <div className="flex items-center gap-3 min-w-0">
@@ -331,7 +356,8 @@ export default function GoalsPage() {
                 </div>
               </div>
             </Card>
-          );
+          </div>
+        );
         })}
       </div>
 

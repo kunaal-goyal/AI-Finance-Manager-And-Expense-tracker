@@ -24,7 +24,7 @@ import { Input, Select } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { useApp } from '@/context/AppContext';
 import { Transaction, PaymentMethod } from '@/types';
-import { formatCurrency, formatDate, getCategoryColor, EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '@/lib/utils';
+import { cn, formatCurrency, formatDate, getCategoryColor, EXPENSE_CATEGORIES, INCOME_CATEGORIES } from '@/lib/utils';
 import { TransactionModal } from '@/components/transactions/TransactionModal';
 
 export default function TransactionsPage() {
@@ -41,6 +41,7 @@ export default function TransactionsPage() {
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
+  const [hoveredTxId, setHoveredTxId] = useState<string | null>(null);
 
   // Filter & Sort Logic
   const filteredTransactions = useMemo(() => {
@@ -303,15 +304,27 @@ export default function TransactionsPage() {
                   <th className="py-3.5 px-4 text-right">Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-800/60 text-xs sm:text-sm">
+              <tbody
+                className="divide-y divide-slate-800/60 text-xs sm:text-sm"
+                onMouseLeave={() => setHoveredTxId(null)}
+              >
                 {filteredTransactions.map((tx) => {
                   const isIncome = tx.type === 'income';
                   const catColor = getCategoryColor(tx.category);
+                  const isHovered = hoveredTxId === tx.id;
+                  const isOther = hoveredTxId !== null && !isHovered;
 
                   return (
                     <tr
                       key={tx.id}
-                      className="hover:bg-slate-850/50 transition-colors group"
+                      onMouseEnter={() => setHoveredTxId(tx.id)}
+                      className={cn(
+                        'transition-all duration-200 transform-gpu group select-none',
+                        isHovered &&
+                          'scale-[1.015] bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/60 shadow-[0_0_20px_rgba(168,85,247,0.25)] relative z-10',
+                        isOther && 'opacity-50 scale-[0.99] z-0',
+                        !isHovered && !isOther && 'hover:bg-slate-850/50'
+                      )}
                     >
                       {/* Title & Description */}
                       <td className="py-3.5 px-4 sm:px-6">

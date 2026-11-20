@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
@@ -27,6 +27,7 @@ interface MobileNavProps {
 export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
   const pathname = usePathname();
   const { profile } = useApp();
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   if (!isOpen) return null;
 
@@ -72,43 +73,61 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
               onClose();
               onOpenAddModal();
             }}
-            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-2.5 px-4 rounded-xl text-sm"
+            className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-2.5 px-4 rounded-xl text-sm shadow-lg shadow-purple-600/25 active:scale-95 transition-transform"
           >
             <PlusCircle className="w-4 h-4" />
             <span>Add Transaction</span>
           </button>
         </div>
 
-        {/* Nav Links */}
-        <nav className="space-y-1 flex-1 overflow-y-auto">
-          {navItems.map((item) => {
+        {/* Nav Links with Fisheye Zoom & Glow */}
+        <nav
+          className="space-y-1.5 flex-1 overflow-y-auto py-2"
+          onMouseLeave={() => setHoveredIdx(null)}
+        >
+          {navItems.map((item, index) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
+            const isHovered = hoveredIdx === index;
+            const isOtherHovered = hoveredIdx !== null && !isHovered;
 
             return (
-              <Link
-                key={item.name}
-                href={item.href}
-                onClick={onClose}
-                className={cn(
-                  'flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30'
-                    : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+              <div key={item.name} className="relative">
+                {isHovered && (
+                  <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40 opacity-75 blur-md -z-10 animate-pulse pointer-events-none" />
                 )}
-              >
-                <Icon
+
+                <Link
+                  href={item.href}
+                  onClick={onClose}
+                  onMouseEnter={() => setHoveredIdx(index)}
                   className={cn(
-                    'w-4 h-4',
-                    isActive
-                      ? 'text-purple-400'
-                      : item.isAi
-                      ? 'text-cyan-400'
-                      : 'text-slate-400'
+                    'relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
+                    isHovered &&
+                      'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20',
+                    isOtherHovered && 'scale-[0.94] opacity-55 z-0',
+                    !isHovered && !isOtherHovered && (
+                      isActive
+                        ? 'bg-purple-600/15 text-purple-300 border border-purple-500/30'
+                        : 'text-slate-400 hover:text-white hover:bg-slate-800/60'
+                    )
                   )}
-                />
-                <span>{item.name}</span>
-              </Link>
+                >
+                  <Icon
+                    className={cn(
+                      'w-4 h-4 transition-all duration-300',
+                      isHovered
+                        ? 'text-purple-300 scale-110 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]'
+                        : isActive
+                        ? 'text-purple-400'
+                        : item.isAi
+                        ? 'text-cyan-400'
+                        : 'text-slate-400'
+                    )}
+                  />
+                  <span className={cn(isHovered && 'font-bold text-white')}>{item.name}</span>
+                </Link>
+              </div>
             );
           })}
         </nav>
