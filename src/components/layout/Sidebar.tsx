@@ -67,7 +67,7 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
   ];
 
   return (
-    <aside className="hidden lg:flex flex-col w-64 border-r border-slate-800/80 bg-[#090e1e] p-5 shrink-0 min-h-screen sticky top-0 h-screen overflow-y-auto">
+    <aside className="hidden lg:flex flex-col w-64 border-r border-slate-800/80 bg-[#090e1e] p-5 shrink-0 min-h-screen sticky top-0 h-screen overflow-x-hidden overflow-y-auto scrollbar-none select-none">
       {/* Brand Logo */}
       <Link href="/dashboard" className="flex items-center gap-3 px-2 py-1 mb-8 group">
         <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/25 group-hover:scale-110 transition-transform duration-300">
@@ -94,7 +94,7 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
 
       {/* Navigation Links with Fisheye / Zoom & Glow Animation */}
       <nav
-        className="space-y-1.5 flex-1 py-1"
+        className="space-y-1.5 flex-1 py-1 overflow-x-hidden scrollbar-none"
         onMouseLeave={() => setHoveredIdx(null)}
       >
         <div className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
@@ -112,7 +112,7 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
               {isHovered && (
                 <div
                   className={cn(
-                    'absolute -inset-1 rounded-2xl opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none',
+                    'absolute inset-0 rounded-xl opacity-75 blur-md -z-10 transition-all duration-300 animate-pulse pointer-events-none',
                     theme === 'light'
                       ? 'bg-gradient-to-r from-purple-400/40 via-indigo-400/30 to-pink-400/30'
                       : 'bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40'
@@ -124,14 +124,14 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                 href={item.href}
                 onMouseEnter={() => setHoveredIdx(index)}
                 className={cn(
-                  'relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
-                  // Hovered state: zoom in, translate right, glow
+                  'relative flex items-center justify-between px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-center select-none',
+                  // Hovered state: zoom in slightly without pushing horizontally
                   isHovered &&
                     (theme === 'light'
-                      ? 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
-                      : 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
+                      ? 'scale-[1.03] bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
+                      : 'scale-[1.03] bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
                   // Other items: decrease size and soften opacity
-                  isOtherHovered && 'scale-[0.94] opacity-50 z-0',
+                  isOtherHovered && 'scale-[0.96] opacity-50 z-0',
                   // Standard state when nothing hovered
                   !isHovered && !isOtherHovered && (
                     isActive

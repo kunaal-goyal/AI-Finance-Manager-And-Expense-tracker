@@ -15,7 +15,7 @@ export default function DashboardLayout({
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen app-shell bg-[#070b16] text-slate-100 flex flex-col lg:flex-row antialiased transition-colors duration-200">
+    <div className="min-h-screen app-shell bg-[#070b16] text-slate-100 flex flex-col lg:flex-row antialiased transition-colors duration-200 overflow-x-hidden">
       {/* Desktop Sidebar */}
       <Sidebar onOpenAddModal={() => setIsAddModalOpen(true)} />
 

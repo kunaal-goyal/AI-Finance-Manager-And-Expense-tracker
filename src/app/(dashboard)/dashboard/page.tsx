@@ -28,21 +28,13 @@ export default function DashboardPage() {
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-4">
             <span
               className="student-greeting-hello text-2xl sm:text-3xl font-medium tracking-tight"
-              style={{
-                color: '#a78bfa',
-                textShadow:
-                  '0 0 16px rgba(167,139,250,0.6), 0 0 36px rgba(139,92,246,0.35)',
-              }}
             >
               Hello,
             </span>
             <span
-              className="student-greeting-name font-tangerine text-6xl sm:text-7xl lg:text-8xl font-bold tracking-normal leading-none"
+              className="student-greeting-name font-tangerine text-6xl sm:text-7xl lg:text-8xl font-bold tracking-normal leading-none inline-block pb-1"
               style={{
                 fontFamily: "'Tangerine', cursive",
-                color: '#ffffff',
-                textShadow:
-                  '0 0 24px rgba(255,255,255,0.25), 0 0 55px rgba(167,139,250,0.35)',
               }}
             >
               {profile.fullName.split(' ')[0]}

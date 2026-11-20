@@ -41,7 +41,33 @@ body {
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
-  height: 6px;
+  height: 0px;
+}
+
+/* Permanently hide all horizontal scrollbars everywhere */
+::-webkit-scrollbar:horizontal {
+  display: none !important;
+  height: 0px !important;
+  width: 0px !important;
+}
+
+/* Permanently hide scrollbars on aside, nav, and no-scrollbar elements */
+aside,
+nav,
+.scrollbar-none,
+.no-scrollbar {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  overflow-x: hidden !important;
+}
+
+aside::-webkit-scrollbar,
+nav::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar,
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+  width: 0px !important;
+  height: 0px !important;
 }
 
 ::-webkit-scrollbar-track {
@@ -172,6 +198,21 @@ html.light .text-slate-500 {
   color: #64748b !important;
 }
 
+/* Student Greeting in Dark Mode */
+.student-greeting-hello {
+  color: #a78bfa;
+  text-shadow: 0 0 16px rgba(167, 139, 250, 0.6), 0 0 36px rgba(139, 92, 246, 0.35);
+}
+
+.student-greeting-name {
+  background: linear-gradient(135deg, #ffffff 0%, #ede9fe 25%, #c084fc 60%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  filter: drop-shadow(0 0 20px rgba(192, 132, 252, 0.45)) drop-shadow(0 0 45px rgba(168, 85, 247, 0.3));
+}
+
 /* Student Greeting in Light Mode */
 html.light .student-greeting-hello {
   color: #7c3aed !important;
@@ -179,8 +220,12 @@ html.light .student-greeting-hello {
 }
 
 html.light .student-greeting-name {
-  color: #4c1d95 !important;
-  text-shadow: 0 0 24px rgba(109, 40, 217, 0.3) !important;
+  background: linear-gradient(135deg, #3b0764 0%, #6b21a8 30%, #9333ea 65%, #db2777 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  filter: drop-shadow(0 2px 14px rgba(147, 51, 234, 0.25)) !important;
 }
 
 /* Borders */

@@ -84,7 +84,7 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
 
         {/* Nav Links with Fisheye Zoom & Glow */}
         <nav
-          className="space-y-1.5 flex-1 overflow-y-auto py-2"
+          className="space-y-1.5 flex-1 overflow-x-hidden overflow-y-auto scrollbar-none py-2"
           onMouseLeave={() => setHoveredIdx(null)}
         >
           {navItems.map((item, index) => {
@@ -98,7 +98,7 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
                 {isHovered && (
                   <div
                     className={cn(
-                      'absolute -inset-1 rounded-2xl opacity-75 blur-md -z-10 animate-pulse pointer-events-none',
+                      'absolute inset-0 rounded-xl opacity-75 blur-md -z-10 animate-pulse pointer-events-none',
                       theme === 'light'
                         ? 'bg-gradient-to-r from-purple-400/40 via-indigo-400/30 to-pink-400/30'
                         : 'bg-gradient-to-r from-purple-600/60 via-indigo-600/50 to-cyan-500/40'
@@ -111,12 +111,12 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
                   onClick={onClose}
                   onMouseEnter={() => setHoveredIdx(index)}
                   className={cn(
-                    'relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-left select-none',
+                    'relative flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all duration-300 ease-[cubic-bezier(0.34,1.56,0.64,1)] transform-gpu origin-center select-none',
                     isHovered &&
                       (theme === 'light'
-                        ? 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
-                        : 'scale-[1.06] translate-x-1.5 bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
-                    isOtherHovered && 'scale-[0.94] opacity-50 z-0',
+                        ? 'scale-[1.03] bg-gradient-to-r from-purple-100 via-indigo-50 to-purple-100 text-purple-900 border border-purple-300 shadow-[0_4px_20px_rgba(147,51,234,0.18)] z-20 font-bold'
+                        : 'scale-[1.03] bg-gradient-to-r from-purple-600/30 via-indigo-600/25 to-purple-900/40 text-white border border-purple-400/80 shadow-[0_0_22px_rgba(168,85,247,0.4)] z-20 font-bold'),
+                    isOtherHovered && 'scale-[0.96] opacity-50 z-0',
                     !isHovered && !isOtherHovered && (
                       isActive
                         ? (theme === 'light'
