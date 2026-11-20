@@ -14,6 +14,8 @@ import {
   X,
   PlusCircle,
   GraduationCap,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useApp } from '@/context/AppContext';
@@ -26,7 +28,7 @@ interface MobileNavProps {
 
 export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
   const pathname = usePathname();
-  const { profile } = useApp();
+  const { profile, theme, toggleTheme } = useApp();
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   if (!isOpen) return null;
@@ -132,10 +134,23 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
           })}
         </nav>
 
-        {/* Footer */}
-        <div className="pt-4 border-t border-slate-800">
-          <p className="text-xs font-semibold text-white truncate">{profile.fullName}</p>
-          <p className="text-[11px] text-slate-400 truncate">{profile.collegeName}</p>
+        {/* Footer with Theme Switch & Profile */}
+        <div className="pt-4 border-t border-slate-800 space-y-3">
+          <button
+            onClick={toggleTheme}
+            className="w-full flex items-center justify-between px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 text-xs text-slate-200"
+          >
+            <span className="flex items-center gap-2">
+              {theme === 'dark' ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-purple-400" />}
+              <span>{theme === 'dark' ? 'Light Mode' : 'Dark Mode'}</span>
+            </span>
+            <span className="text-[10px] uppercase font-semibold text-purple-400">Toggle</span>
+          </button>
+
+          <div>
+            <p className="text-xs font-semibold text-white truncate">{profile.fullName}</p>
+            <p className="text-[11px] text-slate-400 truncate">{profile.collegeName}</p>
+          </div>
         </div>
       </div>
     </div>

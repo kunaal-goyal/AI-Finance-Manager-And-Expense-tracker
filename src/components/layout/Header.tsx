@@ -13,6 +13,8 @@ import {
   Coins,
   LogOut,
   User,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { useApp } from '@/context/AppContext';
 import { formatCurrency } from '@/lib/utils';
@@ -30,7 +32,7 @@ export function Header({
   isMobileMenuOpen,
 }: HeaderProps) {
   const pathname = usePathname();
-  const { profile, summary, logout } = useApp();
+  const { profile, summary, logout, theme, toggleTheme } = useApp();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   // Derive friendly page title from pathname
@@ -109,6 +111,20 @@ export function Header({
         >
           <span className="hidden sm:inline">Add</span>
         </Button>
+
+        {/* Dark / Light Mode Toggle Button */}
+        <button
+          onClick={toggleTheme}
+          aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+          className="p-2 rounded-xl border transition-all duration-200 flex items-center justify-center bg-slate-900/90 hover:bg-slate-800 text-amber-400 border-slate-800 hover:border-amber-400/50 hover:scale-105 active:scale-95 shadow-sm"
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-4 h-4 text-amber-400 transition-transform duration-300" />
+          ) : (
+            <Moon className="w-4 h-4 text-purple-600 transition-transform duration-300" />
+          )}
+        </button>
 
         {/* User Dropdown */}
         <div className="relative">

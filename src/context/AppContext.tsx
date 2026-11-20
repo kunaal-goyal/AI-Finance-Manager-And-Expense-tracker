@@ -34,6 +34,9 @@ interface AppContextType {
   budgetPerformances: ReturnType<typeof calculateBudgetPerformances>;
   isLoading: boolean;
   isSupabaseMode: boolean;
+  theme: 'dark' | 'light';
+  toggleTheme: () => void;
+  setThemeMode: (theme: 'dark' | 'light') => void;
   
   // Actions
   addTransaction: (tx: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>;
@@ -76,6 +79,44 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS);
   const [budgets, setBudgets] = useState<Budget[]>(INITIAL_BUDGETS);
   const [goals, setGoals] = useState<SavingsGoal[]>(INITIAL_GOALS);
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+
+  const applyTheme = (t: 'dark' | 'light') => {
+    if (typeof document !== 'undefined') {
+      const root = document.documentElement;
+      if (t === 'light') {
+        root.classList.remove('dark');
+        root.classList.add('light');
+        root.style.colorScheme = 'light';
+      } else {
+        root.classList.add('dark');
+        root.classList.remove('light');
+        root.style.colorScheme = 'dark';
+      }
+    }
+  };
+
+  const setThemeMode = (t: 'dark' | 'light') => {
+    setTheme(t);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('spendwise_theme', t);
+    }
+    applyTheme(t);
+  };
+
+  const toggleTheme = () => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setThemeMode(next);
+  };
+
+  // Initialize theme on mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = (localStorage.getItem('spendwise_theme') as 'dark' | 'light') || 'dark';
+      setTheme(savedTheme);
+      applyTheme(savedTheme);
+    }
+  }, []);
 
   // Initialize data on mount
   useEffect(() => {
@@ -416,6 +457,9 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
         budgetPerformances,
         isLoading,
         isSupabaseMode: isSupabaseConfigured,
+        theme,
+        toggleTheme,
+        setThemeMode,
         addTransaction,
         updateTransaction,
         deleteTransaction,

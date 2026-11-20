@@ -13,12 +13,15 @@ import {
   Check,
   ShieldCheck,
   Key,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Input, Select } from '@/components/ui/Input';
 import { Badge } from '@/components/ui/Badge';
 import { useApp } from '@/context/AppContext';
+import { cn } from '@/lib/utils';
 import { StudentType } from '@/types';
 
 export default function SettingsPage() {
@@ -31,6 +34,8 @@ export default function SettingsPage() {
     resetToDemoData,
     clearAllData,
     isSupabaseMode,
+    theme,
+    setThemeMode,
   } = useApp();
 
   const [fullName, setFullName] = useState(profile.fullName);
@@ -220,6 +225,63 @@ export default function SettingsPage() {
             </Button>
           </div>
         </form>
+      </Card>
+
+      {/* Theme Appearance Card */}
+      <Card>
+        <CardHeader>
+          <div className="flex items-center gap-2">
+            <Sun className="w-5 h-5 text-amber-400" />
+            <CardTitle>Appearance & Theme Mode</CardTitle>
+          </div>
+          <CardDescription>Select your preferred visual theme for SpendWise AI</CardDescription>
+        </CardHeader>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <button
+            type="button"
+            onClick={() => setThemeMode('dark')}
+            className={cn(
+              'p-4 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer',
+              theme === 'dark'
+                ? 'bg-purple-950/40 border-purple-500 ring-2 ring-purple-500/30'
+                : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-slate-950 border border-slate-800 flex items-center justify-center text-purple-400">
+                <Moon className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="font-bold text-sm text-white">Dark Mode</p>
+                <p className="text-xs text-slate-400">Deep navy theme with neon purple accents</p>
+              </div>
+            </div>
+            {theme === 'dark' && <Check className="w-4 h-4 text-purple-400" />}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setThemeMode('light')}
+            className={cn(
+              'p-4 rounded-xl border text-left transition-all flex items-center justify-between cursor-pointer',
+              theme === 'light'
+                ? 'bg-purple-50 border-purple-500 ring-2 ring-purple-500/30'
+                : 'bg-slate-900 border-slate-800 hover:border-slate-700'
+            )}
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-white border border-slate-300 flex items-center justify-center text-amber-500">
+                <Sun className="w-4 h-4" />
+              </div>
+              <div>
+                <p className="font-bold text-sm text-white">Light Mode</p>
+                <p className="text-xs text-slate-400">Clean white & slate palette with visible typography</p>
+              </div>
+            </div>
+            {theme === 'light' && <Check className="w-4 h-4 text-purple-600" />}
+          </button>
+        </div>
       </Card>
 
       {/* System Status & Database Connection */}

@@ -27,7 +27,7 @@ export default function DashboardPage() {
           {/* Hello + Name */}
           <div className="flex flex-wrap items-baseline gap-2 sm:gap-4">
             <span
-              className="text-2xl sm:text-3xl font-medium tracking-tight"
+              className="student-greeting-hello text-2xl sm:text-3xl font-medium tracking-tight"
               style={{
                 color: '#a78bfa',
                 textShadow:
@@ -37,7 +37,7 @@ export default function DashboardPage() {
               Hello,
             </span>
             <span
-              className="font-tangerine text-6xl sm:text-7xl lg:text-8xl font-bold tracking-normal leading-none"
+              className="student-greeting-name font-tangerine text-6xl sm:text-7xl lg:text-8xl font-bold tracking-normal leading-none"
               style={{
                 fontFamily: "'Tangerine', cursive",
                 color: '#ffffff',

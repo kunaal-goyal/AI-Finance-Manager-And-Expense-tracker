@@ -7,6 +7,27 @@
 :root {
   --background: #070b16;
   --foreground: #f8fafc;
+  --card-bg: rgba(13, 20, 39, 0.85);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --header-bg: rgba(9, 14, 30, 0.9);
+  --sidebar-bg: #090e1e;
+  --text-main: #ffffff;
+  --text-sub: #94a3b8;
+  --text-muted: #64748b;
+  --border-main: rgba(51, 65, 85, 0.7);
+}
+
+html.light {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+  --card-bg: #ffffff;
+  --card-border: #e2e8f0;
+  --header-bg: rgba(255, 255, 255, 0.95);
+  --sidebar-bg: #ffffff;
+  --text-main: #0f172a;
+  --text-sub: #475569;
+  --text-muted: #64748b;
+  --border-main: #e2e8f0;
 }
 
 body {
@@ -14,6 +35,7 @@ body {
   background: var(--background);
   font-family: 'Commissioner', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 /* Custom Scrollbars */
@@ -26,13 +48,25 @@ body {
   background: #090e1d;
 }
 
+html.light ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
 ::-webkit-scrollbar-thumb {
   background: #1e294b;
   border-radius: 9999px;
 }
 
+html.light ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+}
+
 ::-webkit-scrollbar-thumb:hover {
   background: #313f6e;
+}
+
+html.light ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
 }
 
 /* Glassmorphism helpers */
@@ -70,4 +104,152 @@ body {
   background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* ==========================================================================
+   LIGHT MODE OVERRIDES: Visible, High-Contrast Colors across All Components
+   ========================================================================== */
+
+html.light body {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+html.light .app-shell {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
+}
+
+/* Sidebar & Header */
+html.light aside {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 2px 0 12px -2px rgba(0, 0, 0, 0.03);
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.03);
+}
+
+/* Cards & Panels */
+html.light .glass-panel,
+html.light .glass-card,
+html.light [class*="bg-[#0d1427]"],
+html.light [class*="bg-[#0a0f1e]"],
+html.light [class*="bg-[#0f172a]"],
+html.light [class*="bg-[#090e1e]"] {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .bg-slate-900\/90,
+html.light .bg-slate-900\/80,
+html.light .bg-slate-900\/60,
+html.light .bg-slate-900 {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Typography Visibility in Light Mode */
+html.light .text-white {
+  color: #0f172a !important;
+}
+
+html.light .text-slate-100,
+html.light .text-slate-200,
+html.light .text-slate-300 {
+  color: #1e293b !important;
+}
+
+html.light .text-slate-400 {
+  color: #475569 !important;
+}
+
+html.light .text-slate-500 {
+  color: #64748b !important;
+}
+
+/* Student Greeting in Light Mode */
+html.light .student-greeting-hello {
+  color: #7c3aed !important;
+  text-shadow: 0 0 16px rgba(124, 58, 237, 0.25) !important;
+}
+
+html.light .student-greeting-name {
+  color: #4c1d95 !important;
+  text-shadow: 0 0 24px rgba(109, 40, 217, 0.3) !important;
+}
+
+/* Borders */
+html.light .border-slate-800,
+html.light .border-slate-800\/80,
+html.light .border-slate-800\/60,
+html.light .border-slate-700,
+html.light .border-slate-700\/80 {
+  border-color: #e2e8f0 !important;
+}
+
+/* Inputs, Selects & Forms */
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+  border-color: #cbd5e1 !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+html.light select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Tables & Lists */
+html.light th {
+  background-color: #f8fafc !important;
+  color: #475569 !important;
+  border-color: #e2e8f0 !important;
+}
+
+html.light tr:hover {
+  background-color: #f1f5f9 !important;
+}
+
+/* Modals & Dropdown Popups */
+html.light [role="dialog"],
+html.light .modal-box {
+  background-color: #ffffff !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+}
+
+/* AI Chat Bubbles in Light Mode */
+html.light .bg-slate-900\/90.border-slate-800 {
+  background-color: #f8fafc !important;
+  border-color: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+/* Recharts visibility in Light Mode */
+html.light .recharts-cartesian-grid-horizontal line,
+html.light .recharts-cartesian-grid-vertical line {
+  stroke: #e2e8f0 !important;
+}
+
+html.light .recharts-text {
+  fill: #64748b !important;
+}
+
+html.light .recharts-default-tooltip {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+  color: #0f172a !important;
 }
