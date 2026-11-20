@@ -21,27 +21,27 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      {/* Greeting Header */}
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 p-6 rounded-2xl bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900 border border-purple-500/20 backdrop-blur-sm">
+      {/* Greeting Section (No Enclosing Box) */}
+      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 pt-1 pb-2">
         <div>
           {/* Hello + Name */}
-          <div className="flex flex-col sm:flex-row sm:items-baseline gap-0 sm:gap-3">
+          <div className="flex flex-wrap items-baseline gap-2 sm:gap-4">
             <span
-              className="text-3xl sm:text-4xl font-extrabold tracking-tight leading-none"
+              className="text-2xl sm:text-3xl font-semibold tracking-tight"
               style={{
                 color: '#a78bfa',
                 textShadow:
-                  '0 0 16px rgba(167,139,250,0.6), 0 0 40px rgba(139,92,246,0.35)',
+                  '0 0 16px rgba(167,139,250,0.6), 0 0 36px rgba(139,92,246,0.35)',
               }}
             >
               Hello,
             </span>
             <span
-              className="text-4xl sm:text-5xl font-black tracking-tight leading-tight sm:leading-none"
+              className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-none"
               style={{
                 color: '#ffffff',
                 textShadow:
-                  '0 0 20px rgba(255,255,255,0.15), 0 0 50px rgba(167,139,250,0.22)',
+                  '0 0 24px rgba(255,255,255,0.2), 0 0 55px rgba(167,139,250,0.28)',
               }}
             >
               {profile.fullName.split(' ')[0]}
@@ -49,8 +49,8 @@ export default function DashboardPage() {
           </div>
 
           {/* Sub-info badges */}
-          <div className="flex items-center gap-2 mt-2.5">
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase tracking-wider">
+          <div className="flex items-center gap-2 mt-3">
+            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/25 uppercase tracking-wider">
               {profile.studentType.replace('_', ' ')}
             </span>
             <span className="text-xs text-slate-400 font-medium">{profile.collegeName}</span>
@@ -61,9 +61,9 @@ export default function DashboardPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <div className="text-right px-4 py-2 rounded-xl bg-slate-900/80 border border-slate-800">
+          <div className="text-right px-4 py-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
             <p className="text-[11px] text-slate-400 font-medium">Monthly Allowance</p>
-            <p className="text-base font-bold text-emerald-400">
+            <p className="text-lg font-bold text-emerald-400">
               {formatCurrency(profile.monthlyAllowance, sym)}
             </p>
           </div>
