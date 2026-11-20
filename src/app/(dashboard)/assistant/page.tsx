@@ -33,6 +33,8 @@ function AssistantChatView() {
     budgets,
     goals,
     profile,
+    addTransaction,
+    deleteTransaction,
   } = useApp();
   const sym = profile.currencySymbol;
 
@@ -40,7 +42,7 @@ function AssistantChatView() {
     {
       id: 'msg-welcome',
       role: 'assistant',
-      content: `👋 Hi **${profile.fullName.split(' ')[0]}**! I'm your **SpendWise AI Assistant**, powered by Google Gemini.\n\nI have live access to your current student finances:\n* **Available Balance:** ${sym}${summary.totalBalance.toLocaleString()}\n* **Monthly Spent:** ${sym}${summary.totalExpenses.toLocaleString()} (of ${sym}${summary.monthlyBudgetLimit.toLocaleString()} limit)\n* **Top Spend Category:** ${summary.highestExpenseCategory.category}\n* **Active Savings Goals:** ${goals.length} goals\n\nHow can I help you stretch your allowance or optimize your budget today?`,
+      content: `👋 Hi **${profile.fullName.split(' ')[0]}**! I'm your **SpendWise AI Assistant**, powered by Google Gemini.\n\n✨ **New Skill Active:** I can now directly **add or delete transactions** for you right here in chat!\n\nI have live access to your current student finances:\n* **Available Balance:** ${sym}${summary.totalBalance.toLocaleString()}\n* **Monthly Spent:** ${sym}${summary.totalExpenses.toLocaleString()} (of ${sym}${summary.monthlyBudgetLimit.toLocaleString()} limit)\n* **Top Spend Category:** ${summary.highestExpenseCategory.category}\n* **Active Savings Goals:** ${goals.length} goals\n\nTry telling me: *"Add ₹180 for canteen lunch via UPI"* or ask any question!`,
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     },
   ]);
@@ -67,12 +69,12 @@ function AssistantChatView() {
   }, [queryParam]);
 
   const quickPrompts = [
+    'Add ₹180 for canteen lunch via UPI',
+    'Add ₹2,500 freelance payment received today',
     'Where am I spending most of my money?',
     `How can I save ${sym}2,000 this month?`,
-    `Can I afford to buy a ${sym}5,000 pair of headphones?`,
+    'Delete my latest transaction',
     'Which category is consuming most of my budget?',
-    'Analyze my expenses this month.',
-    'Give me a plan to reduce my food expenses.',
   ];
 
   const handleSendMessage = async (textToSend?: string) => {
@@ -126,10 +128,20 @@ function AssistantChatView() {
 
       setIsOfficialGemini(data.isOfficialGemini);
 
+      // Execute AI action on local & Supabase ledger
+      if (data.action) {
+        if (data.action.type === 'ADD_TRANSACTION' && data.action.data) {
+          await addTransaction(data.action.data);
+        } else if (data.action.type === 'DELETE_TRANSACTION' && data.action.data?.transactionId) {
+          await deleteTransaction(data.action.data.transactionId);
+        }
+      }
+
       const assistantMsg: ChatMessage = {
         id: `assistant-${Date.now()}`,
         role: 'assistant',
         content: data.reply || 'I was unable to analyze that. Please try rephrasing your question.',
+        action: data.action,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
       };
 
@@ -274,6 +286,46 @@ function AssistantChatView() {
                 }`}
               >
                 <div className="space-y-1">{formatMarkdown(msg.content)}</div>
+
+                {/* AI Action Execution Card */}
+                {msg.action && msg.action.type === 'ADD_TRANSACTION' && msg.action.data && (
+                  <div className="mt-3 p-3 rounded-xl bg-emerald-950/50 border border-emerald-500/30 flex items-center justify-between text-xs backdrop-blur-sm">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-7 h-7 rounded-lg bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center font-bold text-sm shrink-0">
+                        +
+                      </span>
+                      <div>
+                        <p className="font-semibold text-emerald-200">{msg.action.data.title}</p>
+                        <p className="text-[10px] text-emerald-400/80">
+                          {msg.action.data.category} • {msg.action.data.paymentMethod} • {msg.action.data.date}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="font-extrabold text-emerald-300 text-sm whitespace-nowrap pl-2">
+                      {formatCurrency(msg.action.data.amount, sym)}
+                    </span>
+                  </div>
+                )}
+
+                {msg.action && msg.action.type === 'DELETE_TRANSACTION' && msg.action.data && (
+                  <div className="mt-3 p-3 rounded-xl bg-rose-950/50 border border-rose-500/30 flex items-center justify-between text-xs backdrop-blur-sm">
+                    <div className="flex items-center gap-2.5">
+                      <span className="w-7 h-7 rounded-lg bg-rose-500/20 text-rose-400 border border-rose-500/30 flex items-center justify-center font-bold text-sm shrink-0">
+                        🗑️
+                      </span>
+                      <div>
+                        <p className="font-semibold text-rose-200">Removed from Ledger</p>
+                        <p className="text-[10px] text-rose-400/80">
+                          {msg.action.data.title || 'Transaction deleted'}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/30">
+                      Deleted
+                    </span>
+                  </div>
+                )}
+
                 <div
                   className={`text-[10px] text-right pt-1 ${
                     isUser ? 'text-purple-200' : 'text-slate-500'

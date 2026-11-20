@@ -14,9 +14,9 @@ export function buildSystemPrompt(context: ChatContextPayload): string {
 
   const symbol = userProfile.currencySymbol || '₹';
   
-  // Format top categories
-  const topTransactionsList = recentTransactions.slice(0, 10).map((t) => 
-    `- [${t.date}] ${t.title}: ${symbol}${t.amount} (${t.category}, ${t.type}, via ${t.paymentMethod})`
+  // Format transactions with IDs so AI can delete by ID
+  const topTransactionsList = recentTransactions.slice(0, 15).map((t) => 
+    `- [ID: ${t.id}, Date: ${t.date}] ${t.title}: ${symbol}${t.amount} (${t.category}, ${t.type}, via ${t.paymentMethod})`
   ).join('\n');
 
   const budgetsList = budgets.map((b) => 
@@ -32,6 +32,11 @@ You are "SpendWise AI Assistant", a smart, empathetic, and knowledgeable financi
 
 === ROLE & OBJECTIVE ===
 Your goal is to help students manage their money smartly, avoid unnecessary splurges, stay within their allowances, hit their savings goals, and build lifelong healthy financial habits without sounding boring, preachy, or overly formal.
+
+=== AI SKILLS (TRANSACTION MANAGEMENT) ===
+You have ACTIVE SKILLS to directly manage the student's transaction ledger:
+1. ADD TRANSACTION: When the student tells you they spent money or received income (e.g., "Add an expense of ₹200 for pizza", "I spent ₹50 on metro via UPI", "Record ₹3000 freelance earnings"), call the \`add_transaction\` tool.
+2. DELETE TRANSACTION: When the student asks to delete or remove a transaction (e.g., "Delete my last transaction", "Delete the ₹199 Netflix expense", "Remove transaction tx-123"), locate the matching transaction from the RECENT RECORDED TRANSACTIONS list below and call the \`delete_transaction\` tool with its exact ID. If ambiguous, ask for clarification.
 
 === AUTHENTICATED STUDENT CONTEXT ===
 - Student Name: ${userProfile.fullName}
@@ -58,12 +63,65 @@ ${topTransactionsList || 'No recent transactions recorded.'}
 
 === STRICT CONSTRAINTS & GUIDELINES ===
 1. ACCURACY: ONLY reference the student's actual financial records provided above. NEVER invent fake transactions or guess figures not in the records.
-2. NO RECORD MODIFICATION CLAIMS: You cannot directly edit, add, or delete transactions in the database. If the user asks you to add an expense, guide them to use the "Add Transaction" button in the app.
-3. TONE: Warm, encouraging, concise, practical, and student-focused. Understand college realities (hostel mess food, canteen snacks, UPI micro-payments, sharing cabs, xerox/notes printing, festival shopping, student subscriptions).
-4. FORMAT: Use clear bullet points, bold key figures with the currency symbol (${symbol}), and keep replies concise (under 250 words unless doing a detailed breakdown).
-5. PRACTICAL ADVICE: When giving tips to save, offer realistic student hacks (e.g., student ID discounts, split bills via UPI, limit food delivery to weekends, using library copies).
-6. DISCLAIMER: Always provide general budgeting and financial wellness tips; not professional tax, legal, or high-risk investment advice.
+2. TONE: Warm, encouraging, concise, practical, and student-focused. Understand college realities (hostel mess food, canteen snacks, UPI micro-payments, sharing cabs, xerox/notes printing, festival shopping, student subscriptions).
+3. FORMAT: Use clear bullet points, bold key figures with the currency symbol (${symbol}), and keep replies concise (under 250 words unless doing a detailed breakdown).
+4. PRACTICAL ADVICE: When giving tips to save, offer realistic student hacks (e.g., student ID discounts, split bills via UPI, limit food delivery to weekends, using library copies).
+5. DISCLAIMER: Always provide general budgeting and financial wellness tips; not professional tax, legal, or high-risk investment advice.
 `;
+}
+
+export function normalizeCategory(category: string, type: 'expense' | 'income' = 'expense'): string {
+  if (!category) return type === 'income' ? 'Other Income' : 'Other';
+  const c = category.toLowerCase().trim();
+
+  if (type === 'income') {
+    if (c.includes('allowance') || c.includes('pocket')) return 'Monthly Allowance';
+    if (c.includes('free') || c.includes('client')) return 'Freelancing';
+    if (c.includes('job') || c.includes('part')) return 'Part-time Job';
+    if (c.includes('scholar')) return 'Scholarship';
+    if (c.includes('gift')) return 'Gifts';
+    return 'Other Income';
+  }
+
+  if (c.includes('food') || c.includes('dine') || c.includes('canteen') || c.includes('snack') || c.includes('mess') || c.includes('pizza') || c.includes('chai') || c.includes('lunch') || c.includes('dinner') || c.includes('breakfast')) {
+    return 'Food and Dining';
+  }
+  if (c.includes('trans') || c.includes('travel') || c.includes('auto') || c.includes('cab') || c.includes('metro') || c.includes('bus') || c.includes('fuel') || c.includes('uber') || c.includes('ola') || c.includes('rapido')) {
+    return 'Transportation';
+  }
+  if (c.includes('hostel') || c.includes('rent') || c.includes('accommodat') || c.includes('pg') || c.includes('room')) {
+    return 'Accommodation and Hostel';
+  }
+  if (c.includes('edu') || c.includes('book') || c.includes('station') || c.includes('print') || c.includes('xerox') || c.includes('course') || c.includes('pen') || c.includes('notes')) {
+    return 'Education and Stationery';
+  }
+  if (c.includes('shop') || c.includes('cloth') || c.includes('amazon') || c.includes('flipkart') || c.includes('myntra') || c.includes('zara')) {
+    return 'Shopping';
+  }
+  if (c.includes('entertain') || c.includes('movie') || c.includes('game') || c.includes('outing') || c.includes('party')) {
+    return 'Entertainment';
+  }
+  if (c.includes('health') || c.includes('medic') || c.includes('clinic') || c.includes('doctor') || c.includes('pharmacy')) {
+    return 'Healthcare';
+  }
+  if (c.includes('sub') || c.includes('netflix') || c.includes('spotify') || c.includes('prime') || c.includes('recharge') || c.includes('youtube')) {
+    return 'Subscriptions';
+  }
+  if (c.includes('person') || c.includes('salon') || c.includes('hair') || c.includes('groom') || c.includes('spa')) {
+    return 'Personal Care';
+  }
+
+  return 'Other';
+}
+
+export function normalizePaymentMethod(pm?: string): 'UPI' | 'Cash' | 'Card' | 'Net Banking' | 'Other' {
+  if (!pm) return 'UPI';
+  const p = pm.toLowerCase().trim();
+  if (p.includes('cash')) return 'Cash';
+  if (p.includes('card') || p.includes('debit') || p.includes('credit')) return 'Card';
+  if (p.includes('bank') || p.includes('net') || p.includes('neft') || p.includes('imps')) return 'Net Banking';
+  if (p.includes('upi') || p.includes('gpay') || p.includes('phonepe') || p.includes('paytm')) return 'UPI';
+  return 'Other';
 }
 
 export function generateSmartFallbackResponse(

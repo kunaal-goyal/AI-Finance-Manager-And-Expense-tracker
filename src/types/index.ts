@@ -96,6 +96,10 @@ export interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
   content: string;
   timestamp: string;
+  action?: {
+    type: 'ADD_TRANSACTION' | 'DELETE_TRANSACTION';
+    data: any;
+  };
   metadata?: {
     suggestedActions?: string[];
     isInsight?: boolean;
