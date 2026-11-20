@@ -9,7 +9,7 @@ export function Card({
   return (
     <div
       className={cn(
-        'rounded-2xl bg-[#0d1427]/80 border border-slate-800/80 backdrop-blur-md shadow-card-subtle p-5 md:p-6 transition-all duration-200',
+        'rounded-2xl bg-black border border-white/10 backdrop-blur-md shadow-card-subtle p-5 md:p-6 transition-all duration-200',
         className
       )}
       {...props}
@@ -26,7 +26,7 @@ export function CardHeader({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('flex items-center justify-between gap-4 pb-4 border-b border-slate-800/60 mb-4', className)}
+      className={cn('flex items-center justify-between gap-4 pb-4 border-b border-white/10 mb-4', className)}
       {...props}
     >
       {children}

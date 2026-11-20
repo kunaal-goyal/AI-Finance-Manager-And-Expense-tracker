@@ -131,7 +131,7 @@ export default function BudgetPage() {
         'transition-all',
         theme === 'light'
           ? 'bg-indigo-50/50 border-indigo-200'
-          : 'bg-gradient-to-r from-[#0d152d] via-[#101833] to-[#0a1024] border-indigo-500/20'
+          : 'bg-black border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.04)]'
       )}>
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div className="space-y-2 flex-1">
@@ -241,10 +241,10 @@ export default function BudgetPage() {
               className="relative"
               onMouseEnter={() => setHoveredBudgetId(budget.id)}
             >
-              {/* Glowing Aura Behind Hovered Budget Card */}
+              {/* Glowing Aura Behind Hovered Budget Card - Pure White in Dark Mode */}
               {isHovered && (
                 <div
-                  className={`absolute -inset-1.5 rounded-2xl bg-gradient-to-r ${statusBadge.glow} opacity-80 blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300`}
+                  className={`absolute -inset-1.5 rounded-2xl bg-gradient-to-r ${theme === 'light' ? statusBadge.glow : 'from-white/30 via-white/20 to-white/30'} opacity-80 blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300`}
                 />
               )}
 
@@ -253,14 +253,14 @@ export default function BudgetPage() {
                   isHovered
                     ? (theme === 'light'
                         ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400 shadow-[0_8px_30px_rgba(147,51,234,0.18)] bg-white'
-                        : 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]')
+                        : 'scale-[1.04] -translate-y-1.5 z-20 border-white/70 shadow-[0_0_28px_rgba(255,255,255,0.4)] bg-black')
                     : isOther
                     ? 'scale-[0.95] opacity-50 z-0'
-                    : 'hover:border-purple-300'
+                    : (theme === 'light' ? 'hover:border-purple-300' : 'hover:border-white/30')
                 }`}
               >
                 <div>
-                  <div className="flex items-start justify-between gap-2 pb-3 border-b border-slate-800">
+                  <div className={cn('flex items-start justify-between gap-2 pb-3 border-b', theme === 'light' ? 'border-slate-200' : 'border-white/10')}>
                     <div>
                       <h3 className="font-bold text-white text-base">{budget.category}</h3>
                       <p className="text-xs text-slate-400 mt-0.5">

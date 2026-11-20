@@ -47,32 +47,32 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#070b16] flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-black flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background ambient glowing spheres */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
 
       <div className="w-full max-w-md relative z-10 space-y-6">
         {/* Brand header */}
         <div className="text-center space-y-2">
           <Link href="/" className="inline-flex items-center gap-2 group mb-2">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/30 group-hover:scale-105 transition-transform">
-              <GraduationCap className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-white text-black flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.4)] group-hover:scale-105 transition-transform">
+              <GraduationCap className="w-5 h-5 text-black" />
             </div>
             <span className="text-2xl font-black text-white tracking-tight">
-              SpendWise <span className="text-purple-400">AI</span>
+              SpendWise <span className="text-black bg-white font-bold text-xs px-1.5 py-0.5 rounded-md border border-white shadow-[0_0_10px_rgba(255,255,255,0.6)]">AI</span>
             </span>
           </Link>
           <h2 className="text-xl font-bold text-white tracking-tight">
             Welcome Back, Student!
           </h2>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-zinc-400">
             Sign in to check your allowance, log daily campus expenses & consult Gemini
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="rounded-2xl bg-[#0e152a]/90 border border-slate-800 p-6 sm:p-8 backdrop-blur-xl shadow-2xl space-y-5">
+        <div className="rounded-2xl bg-black border border-white/15 p-6 sm:p-8 backdrop-blur-xl shadow-[0_0_50px_rgba(255,255,255,0.06)] space-y-5">
           {/* Quick Demo Access Button */}
           <button
             type="button"
@@ -87,10 +87,11 @@ export default function LoginPage() {
           </button>
 
           <div className="relative flex items-center justify-center">
-            <div className="border-t border-slate-800 w-full" />
-            <span className="bg-[#0e152a] px-3 text-[11px] text-slate-500 uppercase tracking-wider shrink-0">
+            <div className="border-t border-white/10 w-full" />
+            <span className="bg-black px-3 text-[11px] text-zinc-500 uppercase tracking-wider shrink-0">
               Or sign in with email
             </span>
+            <div className="border-t border-white/10 w-full" />
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">

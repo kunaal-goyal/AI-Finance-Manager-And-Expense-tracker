@@ -106,7 +106,7 @@ export function BalanceCards() {
                 className={cn(
                   'absolute -inset-1.5 rounded-2xl bg-gradient-to-r blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300',
                   theme === 'light' ? 'opacity-40' : 'opacity-75',
-                  card.glowColor
+                  theme === 'light' ? card.glowColor : 'from-white/30 via-white/20 to-white/30'
                 )}
               />
             )}
@@ -122,7 +122,7 @@ export function BalanceCards() {
                 isHovered &&
                   (theme === 'light'
                     ? 'scale-[1.05] -translate-y-1 z-20 border-purple-400 shadow-[0_8px_30px_rgba(147,51,234,0.18)] bg-white'
-                    : 'scale-[1.05] -translate-y-1 z-20 border-purple-400/80 shadow-[0_0_25px_rgba(168,85,247,0.35)]'),
+                    : 'scale-[1.05] -translate-y-1 z-20 border-white/70 shadow-[0_0_25px_rgba(255,255,255,0.4)] bg-black'),
                 isOther && 'scale-[0.95] opacity-50 z-0'
               )}
             />

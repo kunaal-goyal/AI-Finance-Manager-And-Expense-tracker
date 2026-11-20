@@ -120,14 +120,14 @@ export function TransactionModal({
     >
       <form onSubmit={handleSubmit} className="space-y-4">
         {/* Type Toggle: Expense vs Income */}
-        <div className="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl border border-slate-800">
+        <div className="grid grid-cols-2 gap-2 p-1 bg-black rounded-xl border border-white/10">
           <button
             type="button"
             onClick={() => handleTypeChange('expense')}
             className={`py-2 text-xs font-semibold rounded-lg transition-all ${
               type === 'expense'
                 ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-zinc-400 hover:text-white'
             }`}
           >
             💸 Expense
@@ -138,7 +138,7 @@ export function TransactionModal({
             className={`py-2 text-xs font-semibold rounded-lg transition-all ${
               type === 'income'
                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shadow-sm'
-                : 'text-slate-400 hover:text-white'
+                : 'text-zinc-400 hover:text-white'
             }`}
           >
             💰 Income / Allowance
@@ -205,7 +205,7 @@ export function TransactionModal({
           </label>
           <textarea
             rows={2}
-            className="w-full rounded-xl bg-slate-900/90 border border-slate-700/80 px-3.5 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+            className="w-full rounded-xl bg-black border border-white/15 px-3.5 py-2 text-sm text-slate-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/40"
             placeholder="e.g. Split with Rohan, paid at North Gate canteen"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -213,7 +213,7 @@ export function TransactionModal({
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-white/10">
           <Button type="button" variant="ghost" onClick={onClose}>
             Cancel
           </Button>

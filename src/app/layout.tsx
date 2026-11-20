@@ -49,7 +49,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-screen bg-[#070b16] text-slate-100 antialiased selection:bg-purple-600 selection:text-white font-sans transition-colors duration-200">
+      <body className="min-h-screen bg-black text-slate-100 antialiased selection:bg-white selection:text-black font-sans transition-colors duration-200">
         <AppProvider>
           {children}
         </AppProvider>

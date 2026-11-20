@@ -29,7 +29,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
             ref={ref}
             id={inputId}
             className={cn(
-              'w-full rounded-xl bg-slate-900/90 border border-slate-700/80 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-150',
+              'w-full rounded-xl bg-black border border-white/15 px-3.5 py-2.5 text-sm text-slate-100 placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white transition-all duration-150',
               leftIcon && 'pl-10',
               error && 'border-rose-500/80 focus:ring-rose-500/50 focus:border-rose-500',
               className
@@ -67,14 +67,14 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={selectId}
           className={cn(
-            'w-full rounded-xl bg-slate-900/90 border border-slate-700/80 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-purple-500/50 focus:border-purple-500 transition-all duration-150 cursor-pointer',
+            'w-full rounded-xl bg-black border border-white/15 px-3.5 py-2.5 text-sm text-slate-100 focus:outline-none focus:ring-2 focus:ring-white/40 focus:border-white transition-all duration-150 cursor-pointer',
             error && 'border-rose-500/80 focus:ring-rose-500/50 focus:border-rose-500',
             className
           )}
           {...props}
         >
           {options.map((opt) => (
-            <option key={opt.value} value={opt.value} className="bg-slate-900 text-slate-100">
+            <option key={opt.value} value={opt.value} className="bg-black text-white">
               {opt.label}
             </option>
           ))}

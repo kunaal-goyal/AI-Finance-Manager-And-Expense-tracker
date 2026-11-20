@@ -72,20 +72,23 @@ export function AIObservationsWidget() {
       'relative overflow-hidden transition-all',
       theme === 'light'
         ? 'border-purple-200 bg-gradient-to-br from-purple-50/70 via-white to-purple-50/40 shadow-sm'
-        : 'border-purple-500/20 bg-gradient-to-br from-[#0e152e] via-[#0b1022] to-[#070b16]'
+        : 'border-white/10 bg-black shadow-[0_0_30px_rgba(255,255,255,0.04)]'
     )}>
-      <div className="absolute top-0 right-0 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.04] rounded-full blur-3xl pointer-events-none" />
 
-      <CardHeader className={cn('mb-3', theme === 'light' ? 'border-purple-100' : 'border-purple-900/30')}>
+      <CardHeader className={cn('mb-3', theme === 'light' ? 'border-purple-100' : 'border-white/10')}>
         <div className="flex items-center gap-2">
-          <div className="p-1.5 rounded-lg bg-purple-500/20 text-purple-300 border border-purple-500/30">
-            <Sparkles className="w-4 h-4 text-cyan-400 animate-pulse" />
+          <div className={cn(
+            'p-1.5 rounded-lg border',
+            theme === 'light' ? 'bg-purple-500/20 text-purple-700 border-purple-500/30' : 'bg-white/10 text-white border-white/20'
+          )}>
+            <Sparkles className="w-4 h-4 text-white animate-pulse" />
           </div>
           <div>
             <CardTitle className="text-sm sm:text-base flex items-center gap-2">
               Gemini AI Financial Observations
             </CardTitle>
-            <p className="text-[11px] text-slate-400">
+            <p className="text-[11px] text-zinc-400">
               Personalized insights deduced from your recorded habits
             </p>
           </div>
@@ -93,7 +96,12 @@ export function AIObservationsWidget() {
 
         <Link
           href="/assistant"
-          className="text-xs font-semibold px-3 py-1.5 rounded-xl bg-purple-600/20 text-purple-300 hover:text-white hover:bg-purple-600/30 border border-purple-500/30 flex items-center gap-1.5 transition-all shrink-0"
+          className={cn(
+            'text-xs font-semibold px-3 py-1.5 rounded-xl border flex items-center gap-1.5 transition-all shrink-0',
+            theme === 'light'
+              ? 'bg-purple-600/20 text-purple-700 hover:text-purple-900 border-purple-500/30'
+              : 'bg-white/10 text-white hover:bg-white/20 border-white/20 hover:border-white/60 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]'
+          )}
         >
           <span>Chat with Gemini</span>
           <ArrowRight className="w-3.5 h-3.5" />
@@ -110,7 +118,7 @@ export function AIObservationsWidget() {
                 'flex items-start gap-3 p-3 rounded-xl border text-xs leading-relaxed',
                 theme === 'light'
                   ? 'bg-white border-purple-100 text-slate-700 shadow-sm'
-                  : 'bg-slate-900/70 border-slate-800/80 text-slate-200'
+                  : 'bg-zinc-950 border-white/10 text-zinc-200'
               )}
             >
               <Icon className={`w-4 h-4 shrink-0 mt-0.5 ${obs.iconColor}`} />

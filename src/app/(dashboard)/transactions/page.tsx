@@ -323,9 +323,9 @@ export default function TransactionsPage() {
                         isHovered &&
                           (theme === 'light'
                             ? 'scale-[1.015] bg-purple-50/90 border-y border-purple-200 shadow-[0_4px_16px_rgba(147,51,234,0.12)] text-slate-900 relative z-10 font-medium'
-                            : 'scale-[1.015] bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900/60 shadow-[0_0_20px_rgba(168,85,247,0.25)] relative z-10'),
+                            : 'scale-[1.015] bg-white/10 border-y border-white/50 shadow-[0_0_20px_rgba(255,255,255,0.3)] relative z-10'),
                         isOther && 'opacity-50 scale-[0.99] z-0',
-                        !isHovered && !isOther && (theme === 'light' ? 'hover:bg-slate-50' : 'hover:bg-slate-850/50')
+                        !isHovered && !isOther && (theme === 'light' ? 'hover:bg-slate-50' : 'hover:bg-white/[0.04]')
                       )}
                     >
                       {/* Title & Description */}

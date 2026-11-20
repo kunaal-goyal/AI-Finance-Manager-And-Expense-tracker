@@ -232,20 +232,26 @@ function AssistantChatView() {
         'flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl border shrink-0 transition-all',
         theme === 'light'
           ? 'bg-purple-50/70 border-purple-200 shadow-sm'
-          : 'bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-slate-900 border-purple-500/20'
+          : 'bg-black border-white/10 shadow-[0_0_30px_rgba(255,255,255,0.04)]'
       )}>
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-cyan-500 flex items-center justify-center shadow-lg shadow-purple-600/30 shrink-0">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className={cn(
+            'w-10 h-10 rounded-xl flex items-center justify-center shrink-0 shadow-lg',
+            theme === 'light' ? 'bg-purple-600 text-white' : 'bg-white text-black shadow-[0_0_20px_rgba(255,255,255,0.35)]'
+          )}>
+            <Sparkles className={cn('w-5 h-5', theme === 'light' ? 'text-white' : 'text-black')} />
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               SpendWise AI Assistant
-              <span className="text-[10px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-semibold">
+              <span className={cn(
+                'text-[10px] px-2 py-0.5 rounded-full font-semibold border',
+                theme === 'light' ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-white/15 text-white border-white/30'
+              )}>
                 Google Gemini
               </span>
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-zinc-400">
               Personalized advice based on your live college transactions & allowance
             </p>
           </div>
@@ -253,20 +259,20 @@ function AssistantChatView() {
 
         {/* Live Injected Context Badges */}
         <div className="flex flex-wrap items-center gap-2 text-[11px]">
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+          <span className={cn('px-2.5 py-1 rounded-lg border', theme === 'light' ? 'bg-slate-100 border-slate-200 text-slate-700' : 'bg-black border-white/10 text-white')}>
             Balance: <strong className="text-emerald-400">{formatCurrency(summary.totalBalance, sym)}</strong>
           </span>
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
+          <span className={cn('px-2.5 py-1 rounded-lg border', theme === 'light' ? 'bg-slate-100 border-slate-200 text-slate-700' : 'bg-black border-white/10 text-white')}>
             Spent: <strong className="text-rose-400">{formatCurrency(summary.totalExpenses, sym)}</strong>
           </span>
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-            Top: <strong className="text-purple-300">{summary.highestExpenseCategory.category}</strong>
+          <span className={cn('px-2.5 py-1 rounded-lg border', theme === 'light' ? 'bg-slate-100 border-slate-200 text-slate-700' : 'bg-black border-white/10 text-white')}>
+            Top: <strong className={theme === 'light' ? 'text-purple-700' : 'text-white'}>{summary.highestExpenseCategory.category}</strong>
           </span>
         </div>
       </div>
 
       {/* Chat Messages Container */}
-      <Card className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-[#0a0f1e]/80 border-slate-800/80">
+      <Card className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 bg-black border-white/10">
         {messages.map((msg) => {
           const isUser = msg.role === 'user';
           return (
@@ -277,18 +283,18 @@ function AssistantChatView() {
               <div
                 className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 text-xs font-bold border ${
                   isUser
-                    ? 'bg-purple-600 text-white border-purple-500/40'
-                    : 'bg-indigo-950/80 text-cyan-300 border-cyan-500/30'
+                    ? 'bg-white text-black border-white font-semibold shadow-[0_0_12px_rgba(255,255,255,0.3)]'
+                    : 'bg-zinc-950 text-white border-white/20'
                 }`}
               >
-                {isUser ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4 text-cyan-400" />}
+                {isUser ? <User className="w-4 h-4 text-black" /> : <Bot className="w-4 h-4 text-white" />}
               </div>
 
               <div
                 className={`rounded-2xl p-4 text-xs sm:text-sm shadow-md space-y-1.5 ${
                   isUser
-                    ? 'bg-purple-600 text-white rounded-tr-none'
-                    : 'bg-slate-900/90 border border-slate-800 text-slate-100 rounded-tl-none'
+                    ? 'bg-white text-black font-medium rounded-tr-none shadow-[0_0_15px_rgba(255,255,255,0.25)]'
+                    : 'bg-zinc-950 border border-white/15 text-slate-100 rounded-tl-none'
                 }`}
               >
                 <div className="space-y-1">{formatMarkdown(msg.content)}</div>
@@ -361,7 +367,7 @@ function AssistantChatView() {
 
       {/* Suggested Quick Prompt Chips */}
       <div className="shrink-0 flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none">
-        <span className="text-[11px] text-slate-400 font-medium whitespace-nowrap pl-1">
+        <span className="text-[11px] text-zinc-400 font-medium whitespace-nowrap pl-1">
           Quick queries:
         </span>
         {quickPrompts.map((prompt, i) => (
@@ -369,7 +375,12 @@ function AssistantChatView() {
             key={i}
             onClick={() => handleSendMessage(prompt)}
             disabled={isLoading}
-            className="text-[11px] whitespace-nowrap px-3 py-1.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-slate-300 hover:text-white border border-slate-800 hover:border-purple-500/40 transition-all shrink-0 active:scale-95 disabled:opacity-50"
+            className={cn(
+              'text-[11px] whitespace-nowrap px-3 py-1.5 rounded-xl border transition-all shrink-0 active:scale-95 disabled:opacity-50',
+              theme === 'light'
+                ? 'bg-slate-100 hover:bg-slate-200 text-slate-700 border-slate-200'
+                : 'bg-black hover:bg-zinc-900 text-zinc-300 hover:text-white border-white/10 hover:border-white/40 hover:shadow-[0_0_12px_rgba(255,255,255,0.2)]'
+            )}
           >
             {prompt}
           </button>
@@ -377,14 +388,17 @@ function AssistantChatView() {
       </div>
 
       {/* Input Form */}
-      <div className="shrink-0 p-2 rounded-2xl bg-slate-900/90 border border-slate-800 flex items-end gap-2">
+      <div className={cn(
+        'shrink-0 p-2 rounded-2xl border flex items-end gap-2',
+        theme === 'light' ? 'bg-white border-slate-200' : 'bg-black border-white/15 shadow-[0_0_25px_rgba(255,255,255,0.05)]'
+      )}>
         <textarea
           rows={1}
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Ask SpendWise AI about your expenses, saving tips, or budgeting..."
-          className="flex-1 bg-transparent px-3 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none resize-none max-h-32"
+          className="flex-1 bg-transparent px-3 py-2 text-sm text-slate-100 placeholder:text-zinc-500 focus:outline-none resize-none max-h-32"
         />
 
         <Button

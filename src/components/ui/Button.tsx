@@ -26,19 +26,19 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#070b16] disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
+      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black disabled:opacity-50 disabled:cursor-not-allowed select-none active:scale-[0.98]';
 
     const variants = {
       primary:
-        'bg-purple-600 hover:bg-purple-500 text-white shadow-lg shadow-purple-600/25 focus:ring-purple-500 border border-purple-500/30',
+        'bg-white hover:bg-slate-200 text-black font-semibold shadow-lg shadow-white/20 hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] focus:ring-white border border-white',
       gradient:
-        'bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white shadow-lg shadow-indigo-600/30 focus:ring-indigo-500 border border-indigo-400/30',
+        'bg-gradient-to-r from-white via-slate-100 to-slate-200 hover:from-slate-100 hover:to-white text-black font-semibold shadow-lg shadow-white/20 hover:shadow-[0_0_25px_rgba(255,255,255,0.45)] focus:ring-white border border-white/80',
       secondary:
-        'bg-slate-800/90 hover:bg-slate-700/90 text-slate-100 border border-slate-700/80 focus:ring-slate-500',
+        'bg-zinc-900 hover:bg-zinc-800 text-white border border-white/15 focus:ring-white/40',
       outline:
-        'bg-transparent hover:bg-slate-800/60 text-slate-200 border border-slate-700 hover:border-slate-500 focus:ring-slate-400',
+        'bg-transparent hover:bg-white/10 text-white border border-white/20 hover:border-white/60 hover:shadow-[0_0_15px_rgba(255,255,255,0.2)] focus:ring-white',
       ghost:
-        'bg-transparent hover:bg-slate-800/50 text-slate-300 hover:text-white focus:ring-slate-500',
+        'bg-transparent hover:bg-white/10 text-zinc-300 hover:text-white focus:ring-white',
       danger:
         'bg-rose-600/90 hover:bg-rose-500 text-white shadow-lg shadow-rose-600/25 border border-rose-500/40 focus:ring-rose-500',
     };

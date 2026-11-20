@@ -10,11 +10,11 @@ import { SpendingTrendChart } from '@/components/dashboard/SpendingTrendChart';
 import { RecentTransactionsWidget } from '@/components/dashboard/RecentTransactionsWidget';
 import { AIObservationsWidget } from '@/components/dashboard/AIObservationsWidget';
 import { Card, CardHeader, CardTitle } from '@/components/ui/Card';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency, cn } from '@/lib/utils';
 import { PiggyBank, ArrowRight, Target } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { profile, goals } = useApp();
+  const { profile, goals, theme } = useApp();
   const sym = profile.currencySymbol;
 
   const activeGoals = goals.filter((g) => !g.isCompleted).slice(0, 3);
@@ -43,18 +43,24 @@ export default function DashboardPage() {
 
           {/* Sub-info badges */}
           <div className="flex items-center gap-2 mt-3">
-            <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-purple-500/15 text-purple-300 border border-purple-500/25 uppercase tracking-wider">
+            <span className={cn(
+              'text-xs font-semibold px-2.5 py-0.5 rounded-full uppercase tracking-wider border',
+              theme === 'light' ? 'bg-purple-100 text-purple-700 border-purple-200' : 'bg-white/10 text-white border-white/20'
+            )}>
               {profile.studentType.replace('_', ' ')}
             </span>
-            <span className="text-xs text-slate-400 font-medium">{profile.collegeName}</span>
+            <span className="text-xs text-zinc-400 font-medium">{profile.collegeName}</span>
           </div>
-          <p className="text-xs sm:text-sm text-slate-400 mt-1">
+          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
             Real-time tracking of allowance, daily spending, budget limits &amp; savings goals
           </p>
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <div className="text-right px-4 py-2.5 rounded-xl bg-slate-900/60 border border-slate-800/80">
+          <div className={cn(
+            'text-right px-4 py-2.5 rounded-xl border',
+            theme === 'light' ? 'bg-slate-100 border-slate-200' : 'bg-black border-white/10'
+          )}>
             <p className="text-[11px] text-slate-400 font-medium">Monthly Allowance</p>
             <p className="text-lg font-bold text-emerald-400">
               {formatCurrency(profile.monthlyAllowance, sym)}

@@ -243,13 +243,15 @@ export default function GoalsPage() {
               className="relative"
               onMouseEnter={() => setHoveredGoalId(g.id)}
             >
-              {/* Glowing Aura Behind Hovered Goal Card */}
+              {/* Glowing Aura Behind Hovered Goal Card - Pure White in Dark Mode */}
               {isHovered && (
                 <div
                   className={`absolute -inset-1.5 rounded-2xl bg-gradient-to-r ${
-                    g.isCompleted
-                      ? 'from-emerald-600/50 via-teal-600/40 to-cyan-500/40'
-                      : 'from-purple-600/50 via-indigo-600/40 to-cyan-500/30'
+                    theme === 'light'
+                      ? g.isCompleted
+                        ? 'from-emerald-600/50 via-teal-600/40 to-cyan-500/40'
+                        : 'from-purple-600/50 via-indigo-600/40 to-cyan-500/30'
+                      : 'from-white/30 via-white/20 to-white/30'
                   } opacity-80 blur-lg -z-10 animate-pulse pointer-events-none transition-all duration-300`}
                 />
               )}
@@ -259,12 +261,12 @@ export default function GoalsPage() {
                   isHovered
                     ? (theme === 'light'
                         ? 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400 shadow-[0_8px_30px_rgba(147,51,234,0.18)] bg-white'
-                        : 'scale-[1.04] -translate-y-1.5 z-20 border-purple-400/80 shadow-[0_0_28px_rgba(168,85,247,0.35)]')
+                        : 'scale-[1.04] -translate-y-1.5 z-20 border-white/70 shadow-[0_0_28px_rgba(255,255,255,0.4)] bg-black')
                     : isOther
                     ? 'scale-[0.95] opacity-50 z-0'
                     : g.isCompleted
-                    ? (theme === 'light' ? 'border-emerald-500/40 bg-emerald-50/50' : 'border-emerald-500/40 bg-emerald-950/10')
-                    : 'hover:border-purple-300'
+                    ? (theme === 'light' ? 'border-emerald-500/40 bg-emerald-50/50' : 'border-emerald-500/40 bg-zinc-950')
+                    : (theme === 'light' ? 'hover:border-purple-300' : 'hover:border-white/30')
                 }`}
               >
               <div>
