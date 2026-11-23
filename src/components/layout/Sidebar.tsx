@@ -223,7 +223,7 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
                   className={cn(
                     'text-[18px] font-bold tracking-tight whitespace-nowrap transition-all duration-200 ease-out origin-left',
                     isExpanded
-                      ? 'opacity-100 max-w-[140px] ml-2'
+                      ? 'opacity-100 max-w-full ml-2'
                       : 'opacity-0 max-w-0 ml-0 overflow-hidden pointer-events-none',
                     isHovered ? 'scale-105' : 'scale-100',
                     isHovered && (theme === 'light' ? 'text-purple-950 font-extrabold' : 'text-white font-extrabold')
@@ -274,11 +274,11 @@ export function Sidebar({ onOpenAddModal }: SidebarProps) {
           <div
             className={cn(
               'overflow-hidden transition-all duration-200 flex-1 min-w-0 whitespace-nowrap',
-              isExpanded ? 'opacity-100 max-w-[140px]' : 'opacity-0 max-w-0 pointer-events-none'
+              isExpanded ? 'opacity-100 max-w-full' : 'opacity-0 max-w-0 pointer-events-none'
             )}
           >
             <p className={cn(
-              'text-xs font-semibold truncate',
+              'text-xs font-semibold',
               theme === 'light' ? 'text-slate-800' : 'text-white'
             )}>
               {profile.fullName}

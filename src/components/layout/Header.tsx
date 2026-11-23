@@ -146,7 +146,7 @@ export function Header({
               onClick={() => setShowUserMenu(false)}
             >
               <div className="px-3 py-2 border-b border-white/10">
-                <p className="text-xs font-semibold text-white truncate">
+                <p className="text-xs font-semibold text-white">
                   {profile.fullName}
                 </p>
                 <p className="text-[11px] text-zinc-400 truncate">

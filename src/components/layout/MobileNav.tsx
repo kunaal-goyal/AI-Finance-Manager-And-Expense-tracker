@@ -175,7 +175,7 @@ export function MobileNav({ isOpen, onClose, onOpenAddModal }: MobileNavProps) {
           </button>
 
           <div>
-            <p className="text-xs font-semibold text-white truncate">{profile.fullName}</p>
+            <p className="text-xs font-semibold text-white">{profile.fullName}</p>
             <p className="text-[11px] text-zinc-400 truncate">{profile.collegeName}</p>
           </div>
         </div>

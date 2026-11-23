@@ -27,7 +27,7 @@ export function StatCard({
   className,
 }: StatCardProps) {
   return (
-    <Card className={cn('relative overflow-hidden group hover:border-slate-700/90 transition-all', className)}>
+    <Card className={cn('relative overflow-hidden group hover:border-slate-700/90 transition-colors transition-shadow duration-200', className)}>
       <div className="flex items-start justify-between gap-4">
         <div className="space-y-1.5 flex-1">
           <p className="text-xs font-medium uppercase tracking-wider text-slate-400">
